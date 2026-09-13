@@ -1,4 +1,4 @@
-package com.example.careerconnect // Change this to match your actual package name at the top of your files!
+package com.careerconnect
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,14 +14,14 @@ class LoginActivity : AppCompatActivity() {
         val btnSubmit = findViewById<Button>(R.id.btnSubmit)
         val btnExit = findViewById<Button>(R.id.btnExit)
 
-        // Navigate to Dashboard on Login click
-        btnSubmit.setOnClickListener {
+        // Navigate to Dashboard / Main on Login click
+        btnSubmit?.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
         // Close app on Exit click
-        btnExit.setOnClickListener {
+        btnExit?.setOnClickListener {
             finishAffinity()
         }
     }

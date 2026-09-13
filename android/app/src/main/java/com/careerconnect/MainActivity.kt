@@ -1,4 +1,4 @@
-package com.example.careerconnect // Change this to your package name
+package com.careerconnect
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         val btnTrackApplications = findViewById<Button>(R.id.btnTrackApplications)
 
         // Navigate to Notification Alerts
-        btnTrackApplications.setOnClickListener {
+        btnTrackApplications?.setOnClickListener {
             val intent = Intent(this, NotificationActivity::class.java)
             startActivity(intent)
         }

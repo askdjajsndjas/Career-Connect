@@ -1,4 +1,4 @@
-package com.example.careerconnect // Change this to your package name
+package com.careerconnect
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,7 @@ class RegisterActivity : AppCompatActivity() {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
 
         // Navigate to Login screen when clicked
-        btnLogin.setOnClickListener {
+        btnLogin?.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }

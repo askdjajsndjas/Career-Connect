@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "Career.Connect"
+    namespace = "com.careerconnect"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "Career.Connect"
+        applicationId = "com.careerconnect"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
