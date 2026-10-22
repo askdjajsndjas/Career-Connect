@@ -2,6 +2,7 @@ package com.careerconnect
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -12,6 +13,12 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
+    // Finds a view by its id name, or returns null if this layout doesn't have it
+    private fun optionalView(name: String): View? {
+        val id = resources.getIdentifier(name, "id", packageName)
+        return if (id != 0) findViewById<View>(id) else null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_layout)
@@ -21,9 +28,6 @@ class LoginActivity : AppCompatActivity() {
         val txtEmail = findViewById<EditText>(R.id.txtName)
         val txtPassword = findViewById<EditText>(R.id.txtPassword)
         val btnSubmit = findViewById<Button>(R.id.btnSubmit)
-        val btnClear = findViewById<Button>(R.id.btnClear)
-        val btnExit = findViewById<Button>(R.id.btnExit)
-        val btnGoRegister = findViewById<Button>(R.id.btnGoRegister)
 
         btnSubmit.setOnClickListener {
             val email = txtEmail.text.toString().trim()
@@ -51,14 +55,14 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
 
-        btnClear.setOnClickListener {
+        optionalView("btnClear")?.setOnClickListener {
             txtEmail.text.clear()
             txtPassword.text.clear()
         }
 
-        btnExit.setOnClickListener { finishAffinity() }
+        optionalView("btnExit")?.setOnClickListener { finishAffinity() }
 
-        btnGoRegister.setOnClickListener {
+        optionalView("btnGoRegister")?.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
