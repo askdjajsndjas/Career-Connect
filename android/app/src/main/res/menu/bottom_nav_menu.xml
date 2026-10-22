@@ -7,7 +7,7 @@
     <item
         android:id="@+id/nav_search"
         android:icon="@drawable/ic_nav_search"
-        android:title="Search" />
+        android:title="Dashboard" />
     <item
         android:id="@+id/nav_applications"
         android:icon="@drawable/ic_nav_applications"

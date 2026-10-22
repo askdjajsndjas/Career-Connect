@@ -32,7 +32,7 @@
                 android:id="@+id/txtGreeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hi, Amina! 👋"
+                android:text="Hi, Student! 👋"
                 android:textColor="@color/text_dark"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -201,6 +201,7 @@
 
                     <!-- Active Chip: All -->
                     <TextView
+                        android:id="@+id/chipTypeAll"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_chip_active"
@@ -215,6 +216,7 @@
 
                     <!-- Inactive Chip: Internship -->
                     <TextView
+                        android:id="@+id/chipTypeInternship"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_chip_inactive"
@@ -228,6 +230,7 @@
 
                     <!-- Inactive Chip: Full-time -->
                     <TextView
+                        android:id="@+id/chipTypeFullTime"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_chip_inactive"
@@ -241,6 +244,7 @@
 
                     <!-- Inactive Chip: Part-time -->
                     <TextView
+                        android:id="@+id/chipTypePartTime"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_chip_inactive"
@@ -254,6 +258,7 @@
 
                     <!-- Inactive Chip: Remote -->
                     <TextView
+                        android:id="@+id/chipTypeRemote"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_chip_inactive"
@@ -397,6 +402,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/txtPostDate1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2d ago"
@@ -506,6 +512,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/txtPostDate2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3d ago"
@@ -517,6 +524,25 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <!-- Container for Additional Repository Job Cards (job_3..job_5) -->
+            <LinearLayout
+                android:id="@+id/extraJobsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- Empty State when Search / Filters Match No Jobs -->
+            <TextView
+                android:id="@+id/txtNoJobsFound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="No matching job opportunities found"
+                android:textColor="@color/text_muted"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
             <!-- Top Categories Header Row -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -560,11 +586,13 @@
 
                 <!-- Cat 1: IT & Tech -->
                 <LinearLayout
+                    android:id="@+id/catItTech"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -575,6 +603,7 @@
                         android:padding="12dp" />
 
                     <TextView
+                        android:id="@+id/txtCatItTech"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="IT &amp; Tech"
@@ -586,11 +615,13 @@
 
                 <!-- Cat 2: Business -->
                 <LinearLayout
+                    android:id="@+id/catBusiness"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -601,6 +632,7 @@
                         android:padding="12dp" />
 
                     <TextView
+                        android:id="@+id/txtCatBusiness"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Business"
@@ -612,11 +644,13 @@
 
                 <!-- Cat 3: Engineering -->
                 <LinearLayout
+                    android:id="@+id/catEngineering"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -627,6 +661,7 @@
                         android:padding="12dp" />
 
                     <TextView
+                        android:id="@+id/txtCatEngineering"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Engineering"
@@ -638,11 +673,13 @@
 
                 <!-- Cat 4: Marketing -->
                 <LinearLayout
+                    android:id="@+id/catMarketing"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -653,6 +690,7 @@
                         android:padding="12dp" />
 
                     <TextView
+                        android:id="@+id/txtCatMarketing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Marketing"
@@ -664,11 +702,13 @@
 
                 <!-- Cat 5: More -->
                 <LinearLayout
+                    android:id="@+id/catMore"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -679,6 +719,7 @@
                         android:padding="12dp" />
 
                     <TextView
+                        android:id="@+id/txtCatMore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More"
