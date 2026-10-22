@@ -13,9 +13,8 @@
         android:theme="@style/Theme.CareerConnect_Frontend">
 
         <activity
-            android:name=".LoginActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:name=".WelcomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,19 +23,24 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
 
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".NotificationActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".DashboardActivity"
-            android:exported="false" />
+            android:exported="true" />
 
     </application>
 
