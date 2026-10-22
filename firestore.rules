@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isEmployer() {
+      return signedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'employer';
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      // Anyone can register, but only as a student
+      allow create: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.role == 'student';
+      // A user can never change their own role
+      allow update: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.role == resource.data.role;
+    }
+
+    match /jobs/{jobId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isEmployer();
+    }
+
+    match /applications/{appId} {
+      // A student can only create an application for themselves, starting as PENDING
+      allow create: if signedIn()
+                    && request.resource.data.studentId == request.auth.uid
+                    && request.resource.data.status == 'PENDING';
+
+      // Readable only by the student who applied and the employer it was sent to
+      allow read: if signedIn() && (resource.data.studentId == request.auth.uid
+                    || resource.data.employerId == request.auth.uid);
+
+      // The employer can change anything except who applied
+      allow update: if signedIn() && resource.data.employerId == request.auth.uid
+                    && request.resource.data.studentId == resource.data.studentId;
+
+      // A student may only archive their own PENDING application (the timeout rule)
+      allow update: if signedIn() && resource.data.studentId == request.auth.uid
+                    && resource.data.status == 'PENDING'
+                    && request.resource.data.status == 'ARCHIVED'
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt']);
+
+      allow delete: if false;
+    }
+  }
+}
