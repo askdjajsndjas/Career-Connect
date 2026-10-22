@@ -482,29 +482,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView?.selectedItemId = R.id.nav_home
-        bottomNavigationView?.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> true
-                R.id.nav_search -> {
-                    startActivity(Intent(this, DashboardActivity::class.java))
-                    true
-                }
-                R.id.nav_applications -> {
-                    startActivity(Intent(this, ApplicationsActivity::class.java))
-                    true
-                }
-                R.id.nav_cv -> {
-                    startActivity(Intent(this, CVBuilderActivity::class.java))
-                    true
-                }
-                R.id.nav_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
-                    true
-                }
-                else -> false
-            }
-        }
+        NavigationHelper.setupBottomNavigation(this, R.id.nav_home)
     }
 }

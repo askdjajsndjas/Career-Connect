@@ -41,18 +41,152 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Category / Stage Filter Chips -->
+    <!-- Summary Statistics Bar -->
+    <LinearLayout
+        android:id="@+id/statsSummaryBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/topBar">
+
+        <!-- Stat: Saved -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardStatSaved"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/tag_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/txtCountSaved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/accent_teal"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saved"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Stat: Applied -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardStatApplied"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/tag_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/txtCountApplied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/primary_blue"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Applied"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Stat: Interview -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardStatInterview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/tag_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/txtCountInterview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/primary_blue_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Interview"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <!-- Stage Filter Chips -->
     <HorizontalScrollView
         android:id="@+id/stageChipsScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingTop="12dp"
+        android:paddingTop="8dp"
         android:paddingBottom="12dp"
         android:scrollbars="none"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/topBar">
+        app:layout_constraintTop_toBottomOf="@id/statsSummaryBar">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -117,178 +251,96 @@
 
     <!-- Applications List / ScrollView -->
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollApps"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="16dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/stageChipsScroll"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView">
 
         <LinearLayout
-            android:id="@+id/appsListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Sample Tracked Item 1 -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardApp1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="2dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:background="@color/white">
-
-                    <ImageView
-                        android:id="@+id/imgAppLogo1"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:src="@drawable/ic_company_abc"
-                        android:contentDescription="Company Logo"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtAppTitle1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Software Development Intern"
-                        android:textColor="@color/text_dark"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="12dp"
-                        app:layout_constraintStart_toEndOf="@id/imgAppLogo1"
-                        app:layout_constraintEnd_toStartOf="@id/txtAppStatus1"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtAppCompany1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="ABC Technologies • Applied on 12 May 2026"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp"
-                        app:layout_constraintStart_toStartOf="@id/txtAppTitle1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txtAppTitle1" />
-
-                    <TextView
-                        android:id="@+id/txtAppStatus1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_tag_pill"
-                        android:text="Application Started"
-                        android:textColor="@color/primary_blue"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Sample Tracked Item 2 -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardApp2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="2dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:background="@color/white">
-
-                    <ImageView
-                        android:id="@+id/imgAppLogo2"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:src="@drawable/ic_company_bmm"
-                        android:contentDescription="Company Logo"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtAppTitle2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Marketing Intern"
-                        android:textColor="@color/text_dark"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="12dp"
-                        app:layout_constraintStart_toEndOf="@id/imgAppLogo2"
-                        app:layout_constraintEnd_toStartOf="@id/txtAppStatus2"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtAppCompany2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Bright Minds Media • Saved on 10 May 2026"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp"
-                        app:layout_constraintStart_toStartOf="@id/txtAppTitle2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txtAppTitle2" />
-
-                    <TextView
-                        android:id="@+id/txtAppStatus2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_tag_pill"
-                        android:text="Saved"
-                        android:textColor="@color/accent_teal"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Container for Additional Tracked Application Cards -->
+            <!-- Container for all dynamic application cards -->
             <LinearLayout
-                android:id="@+id/extraAppsContainer"
+                android:id="@+id/appsListContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-            <!-- Empty State when No Tracked Jobs Match the Stage -->
-            <TextView
-                android:id="@+id/txtEmptyApplications"
+            <!-- Polished Empty State -->
+            <LinearLayout
+                android:id="@+id/layoutEmptyApplications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
                 android:gravity="center"
-                android:text="No tracked applications in this stage yet.\nBookmark or apply to jobs to track them here."
-                android:textColor="@color/text_muted"
-                android:textSize="14sp"
-                android:visibility="gone" />
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_nav_applications"
+                    app:tint="@color/text_muted"
+                    android:background="@drawable/bg_bell_circle"
+                    android:padding="14dp"
+                    android:contentDescription="Applications Icon" />
+
+                <TextView
+                    android:id="@+id/txtEmptyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="No applications tracked yet"
+                    android:textColor="@color/text_dark"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtEmptySubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:text="Jobs you bookmark or apply to will appear here so you can monitor your progress."
+                    android:textColor="@color/text_muted"
+                    android:textSize="13sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnBrowseJobs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_btn_primary"
+                    android:text="Browse Opportunities"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation View -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:elevation="8dp"
+        app:itemIconTint="@color/primary_blue"
+        app:itemTextColor="@color/primary_blue"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

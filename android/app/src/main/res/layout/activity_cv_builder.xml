@@ -41,14 +41,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Scrollable CV Builder Form -->
+    <!-- Scrollable CV Builder Form & Preview -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="20dp"
+        android:padding="16dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/topBar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,85 +56,133 @@
             android:orientation="vertical"
             android:paddingBottom="24dp">
 
+            <!-- Profile Sync Info Banner -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/hero_bg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_nav_profile"
+                        app:tint="@color/primary_blue"
+                        android:contentDescription="Profile Sync" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="Contact, Education &amp; Skills sync from your Profile."
+                        android:textColor="@color/text_dark"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/btnEditProfileLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit Profile"
+                        android:textColor="@color/primary_blue_light"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Section 1: Professional Summary -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Professional Summary"
                 android:textColor="@color/text_dark"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A brief overview of your background and career goals"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp" />
+
+            <EditText
+                android:id="@+id/etSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minLines="3"
                 android:layout_marginTop="8dp"
-                android:hint="Career Objective / Overview"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusTopStart="12dp">
+                android:background="@drawable/bg_search"
+                android:padding="14dp"
+                android:gravity="top"
+                android:textColor="@color/text_dark"
+                android:textSize="14sp"
+                android:inputType="textMultiLine" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etSummary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minLines="3"
-                    android:gravity="top"
-                    android:textColor="@color/text_dark" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
+            <!-- Section 2: Experience & Projects -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Work &amp; Project Experience"
                 android:textColor="@color/text_dark"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:layout_marginTop="20dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Highlight key projects, internships, or practical coursework"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp" />
+
+            <EditText
+                android:id="@+id/etExperience"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minLines="3"
                 android:layout_marginTop="8dp"
-                android:hint="Previous Roles / Projects"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusTopStart="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etExperience"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minLines="3"
-                    android:gravity="top"
-                    android:textColor="@color/text_dark" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:background="@drawable/bg_search"
+                android:padding="14dp"
+                android:gravity="top"
+                android:textColor="@color/text_dark"
+                android:textSize="14sp"
+                android:inputType="textMultiLine" />
 
             <!-- Save CV Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSaveCV"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="24dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/bg_btn_primary"
                 android:text="Save &amp; Generate CV Preview"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textAllCaps="false" />
 
-            <!-- Generated CV Preview Card -->
+            <!-- Generated Live CV Preview Card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCVPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:visibility="gone"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
 
@@ -196,7 +244,7 @@
                         android:layout_height="wrap_content"
                         android:text="Professional Summary"
                         android:textColor="@color/text_dark"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -214,7 +262,7 @@
                         android:layout_marginTop="14dp"
                         android:text="Key Skills"
                         android:textColor="@color/text_dark"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -232,7 +280,7 @@
                         android:layout_marginTop="14dp"
                         android:text="Work &amp; Project Experience"
                         android:textColor="@color/text_dark"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -263,5 +311,18 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation View -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:elevation="8dp"
+        app:itemIconTint="@color/primary_blue"
+        app:itemTextColor="@color/primary_blue"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

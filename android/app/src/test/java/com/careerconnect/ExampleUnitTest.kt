@@ -63,6 +63,36 @@ class ExampleUnitTest {
     }
 
     @Test
+    fun dashboardMetrics_reflectActualRepositoryCounts() {
+        assertEquals(5, JobRepository.getAllJobs().size)
+        assertEquals(0, JobRepository.getTrackedJobs("Saved").size)
+        assertEquals(0, JobRepository.getTrackedJobs("Applied").size)
+        assertEquals(0, JobRepository.getTrackedJobs("Interview").size)
+
+        JobRepository.toggleSaved("job_1")
+        JobRepository.toggleSaved("job_2")
+        JobRepository.updateStatus("job_3", "Application Started")
+        JobRepository.updateStatus("job_4", "Interview")
+
+        assertEquals(2, JobRepository.getTrackedJobs("Saved").size)
+        assertEquals(1, JobRepository.getTrackedJobs("Applied").size)
+        assertEquals(1, JobRepository.getTrackedJobs("Interview").size)
+        assertEquals(4, JobRepository.getTrackedJobs("All").size)
+    }
+
+    @Test
+    fun jobRepository_updateStatus_updatesStageAndSavedFlag() {
+        JobRepository.updateStatus("job_5", "Saved")
+        val job5 = JobRepository.getJobById("job_5")!!
+        assertTrue(job5.isSaved)
+        assertEquals("Saved", job5.applicationStatus)
+
+        JobRepository.updateStatus("job_5", "Not Applied")
+        assertFalse(job5.isSaved)
+        assertEquals("Not Applied", job5.applicationStatus)
+    }
+
+    @Test
     fun resolveFullName_prioritizesEditedProfileNameOverFirebaseDisplayName() {
         val edited = ProfileActivity.resolveFullName(
             savedName = "Thabo Mbeki",

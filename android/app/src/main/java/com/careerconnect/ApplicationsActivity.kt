@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ApplicationsActivity : AppCompatActivity() {
 
@@ -28,13 +30,28 @@ class ApplicationsActivity : AppCompatActivity() {
             finish()
         }
 
+        findViewById<Button>(R.id.btnBrowseJobs)?.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            finish()
+        }
+
         setupStageFilterChips()
+        setupStatCards()
+        setupBottomNav()
         renderTrackedApplications()
     }
 
     override fun onResume() {
         super.onResume()
+        findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.selectedItemId = R.id.nav_applications
         renderTrackedApplications()
+    }
+
+    private fun setupBottomNav() {
+        NavigationHelper.setupBottomNavigation(this, R.id.nav_applications)
     }
 
     private fun setupStageFilterChips() {
@@ -51,6 +68,41 @@ class ApplicationsActivity : AppCompatActivity() {
                 updateStageChipsUI(chipMap)
                 renderTrackedApplications()
             }
+        }
+    }
+
+    private fun setupStatCards() {
+        findViewById<View>(R.id.cardStatSaved)?.setOnClickListener {
+            activeStageFilter = "Saved"
+            updateStageChipsUI(mapOf(
+                R.id.chipAllApps to "All",
+                R.id.chipSavedApps to "Saved",
+                R.id.chipAppliedApps to "Applied",
+                R.id.chipInterviewApps to "Interview"
+            ))
+            renderTrackedApplications()
+        }
+
+        findViewById<View>(R.id.cardStatApplied)?.setOnClickListener {
+            activeStageFilter = "Applied"
+            updateStageChipsUI(mapOf(
+                R.id.chipAllApps to "All",
+                R.id.chipSavedApps to "Saved",
+                R.id.chipAppliedApps to "Applied",
+                R.id.chipInterviewApps to "Interview"
+            ))
+            renderTrackedApplications()
+        }
+
+        findViewById<View>(R.id.cardStatInterview)?.setOnClickListener {
+            activeStageFilter = "Interview"
+            updateStageChipsUI(mapOf(
+                R.id.chipAllApps to "All",
+                R.id.chipSavedApps to "Saved",
+                R.id.chipAppliedApps to "Applied",
+                R.id.chipInterviewApps to "Interview"
+            ))
+            renderTrackedApplications()
         }
     }
 
@@ -71,81 +123,34 @@ class ApplicationsActivity : AppCompatActivity() {
     }
 
     private fun renderTrackedApplications() {
+        // Update summary metrics from JobRepository
+        val savedCount = JobRepository.getTrackedJobs("Saved").size
+        val appliedCount = JobRepository.getTrackedJobs("Applied").size
+        val interviewCount = JobRepository.getTrackedJobs("Interview").size
+
+        findViewById<TextView>(R.id.txtCountSaved)?.text = savedCount.toString()
+        findViewById<TextView>(R.id.txtCountApplied)?.text = appliedCount.toString()
+        findViewById<TextView>(R.id.txtCountInterview)?.text = interviewCount.toString()
+
         val trackedJobs = JobRepository.getTrackedJobs(activeStageFilter)
+        val container = findViewById<LinearLayout>(R.id.appsListContainer)
+        val emptyLayout = findViewById<View>(R.id.layoutEmptyApplications)
 
-        val cardApp1 = findViewById<CardView>(R.id.cardApp1)
-        val cardApp2 = findViewById<CardView>(R.id.cardApp2)
-        val extraAppsContainer = findViewById<LinearLayout>(R.id.extraAppsContainer)
-        val txtEmptyApplications = findViewById<TextView>(R.id.txtEmptyApplications)
+        container?.removeAllViews()
 
-        bindStaticAppCard(
-            card = cardApp1,
-            logoView = findViewById(R.id.imgAppLogo1),
-            titleView = findViewById(R.id.txtAppTitle1),
-            companyView = findViewById(R.id.txtAppCompany1),
-            statusView = findViewById(R.id.txtAppStatus1),
-            job = trackedJobs.getOrNull(0)
-        )
-
-        bindStaticAppCard(
-            card = cardApp2,
-            logoView = findViewById(R.id.imgAppLogo2),
-            titleView = findViewById(R.id.txtAppTitle2),
-            companyView = findViewById(R.id.txtAppCompany2),
-            statusView = findViewById(R.id.txtAppStatus2),
-            job = trackedJobs.getOrNull(1)
-        )
-
-        extraAppsContainer?.removeAllViews()
-        if (trackedJobs.size > 2 && extraAppsContainer != null) {
-            for (job in trackedJobs.drop(2)) {
-                extraAppsContainer.addView(createDynamicAppCard(job))
+        if (trackedJobs.isEmpty()) {
+            emptyLayout?.visibility = View.VISIBLE
+            container?.visibility = View.GONE
+        } else {
+            emptyLayout?.visibility = View.GONE
+            container?.visibility = View.VISIBLE
+            for (job in trackedJobs) {
+                container?.addView(createAppCard(job))
             }
         }
-
-        txtEmptyApplications?.visibility = if (trackedJobs.isEmpty()) View.VISIBLE else View.GONE
     }
 
-    private fun bindStaticAppCard(
-        card: CardView?,
-        logoView: ImageView?,
-        titleView: TextView?,
-        companyView: TextView?,
-        statusView: TextView?,
-        job: JobListing?
-    ) {
-        if (card == null) return
-        if (job == null) {
-            card.visibility = View.GONE
-            return
-        }
-
-        card.visibility = View.VISIBLE
-        logoView?.setImageResource(job.companyLogoRes)
-        titleView?.text = job.title
-        companyView?.text = "${job.company} • ${job.location}"
-
-        val displayStatus = resolveDisplayStatus(job)
-        statusView?.text = displayStatus
-        val statusColor = if (displayStatus.equals("Saved", ignoreCase = true)) {
-            R.color.accent_teal
-        } else {
-            R.color.primary_blue
-        }
-        statusView?.setTextColor(ContextCompat.getColor(this, statusColor))
-
-        statusView?.setOnClickListener {
-            showUpdateStatusDialog(job)
-        }
-
-        card.setOnClickListener {
-            val intent = Intent(this, JobDetailsActivity::class.java)
-            intent.putExtra("EXTRA_JOB_ID", job.id)
-            startActivity(intent)
-        }
-    }
-
-    private fun createDynamicAppCard(job: JobListing): CardView {
+    private fun createAppCard(job: JobListing): CardView {
         val cardView = CardView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -197,7 +202,7 @@ class ApplicationsActivity : AppCompatActivity() {
             ).apply {
                 topMargin = dpToPx(2)
             }
-            text = "${job.company} • ${job.location}"
+            text = "${job.company} • ${job.location} • ${job.employmentType}"
             setTextColor(ContextCompat.getColor(this@ApplicationsActivity, R.color.text_muted))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         }
@@ -206,10 +211,10 @@ class ApplicationsActivity : AppCompatActivity() {
         middleColumn.addView(companyView)
 
         val displayStatus = resolveDisplayStatus(job)
-        val statusColor = if (displayStatus.equals("Saved", ignoreCase = true)) {
-            R.color.accent_teal
-        } else {
-            R.color.primary_blue
+        val statusColor = when (displayStatus.lowercase()) {
+            "saved" -> R.color.accent_teal
+            "interview" -> R.color.primary_blue_light
+            else -> R.color.primary_blue
         }
 
         val statusView = TextView(this).apply {
@@ -222,7 +227,7 @@ class ApplicationsActivity : AppCompatActivity() {
             setTextColor(ContextCompat.getColor(this@ApplicationsActivity, statusColor))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
             setTypeface(null, Typeface.BOLD)
-            setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(4))
+            setPadding(dpToPx(10), dpToPx(5), dpToPx(10), dpToPx(5))
             setOnClickListener {
                 showUpdateStatusDialog(job)
             }
@@ -234,8 +239,9 @@ class ApplicationsActivity : AppCompatActivity() {
         cardView.addView(rootRow)
 
         cardView.setOnClickListener {
-            val intent = Intent(this, JobDetailsActivity::class.java)
-            intent.putExtra("EXTRA_JOB_ID", job.id)
+            val intent = Intent(this, JobDetailsActivity::class.java).apply {
+                putExtra("EXTRA_JOB_ID", job.id)
+            }
             startActivity(intent)
         }
 

@@ -7,13 +7,16 @@ import android.os.Bundle
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import java.security.KeyStore
@@ -25,24 +28,35 @@ import javax.crypto.spec.GCMParameterSpec
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private var isEditMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
         auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
 
         findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener { finish() }
 
-        val txtProfileName = findViewById<TextView>(R.id.txtProfileName)
-        val txtProfileEmail = findViewById<TextView>(R.id.txtProfileEmail)
-        val etFullName = findViewById<EditText>(R.id.etFullName)
-        val etPhone = findViewById<EditText>(R.id.etPhone)
-        val etEducation = findViewById<EditText>(R.id.etEducation)
-        val etQualification = findViewById<EditText>(R.id.etQualification)
-        val etSkills = findViewById<EditText>(R.id.etSkills)
+        setupBottomNav()
+        loadProfileData()
+        setupActions()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.selectedItemId = R.id.nav_profile
+        if (!isEditMode) {
+            loadProfileData()
+        }
+    }
+
+    private fun setupBottomNav() {
+        NavigationHelper.setupBottomNavigation(this, R.id.nav_profile)
+    }
+
+    private fun loadProfileData() {
+        val user = auth.currentUser
         val prefs = getSharedPreferences(profilePrefsName(user?.uid), Context.MODE_PRIVATE)
 
         val savedFullName = readSecurePref(prefs, "fullName", null)
@@ -53,24 +67,60 @@ class ProfileActivity : AppCompatActivity() {
         )
         val email = user?.email ?: "student@university.ac.za"
 
-        txtProfileName?.text = displayName
-        txtProfileEmail?.text = email
-        etFullName?.setText(displayName)
-        etPhone?.setText(readSecurePref(prefs, "phone", "+27 82 123 4567"))
-        etEducation?.setText(readSecurePref(prefs, "education", "University of Johannesburg"))
-        etQualification?.setText(readSecurePref(prefs, "qualification", "BSc Information Technology"))
-        etSkills?.setText(readSecurePref(prefs, "skills", "Kotlin, Java, Python, Android Studio, Git"))
+        findViewById<TextView>(R.id.txtProfileName)?.text = displayName
+        findViewById<TextView>(R.id.txtProfileEmail)?.text = email
 
-        findViewById<Button>(R.id.btnSaveProfile)?.setOnClickListener {
-            val updatedName = etFullName?.text?.toString()?.trim() ?: ""
-            val updatedPhone = etPhone?.text?.toString()?.trim() ?: ""
-            val updatedEdu = etEducation?.text?.toString()?.trim() ?: ""
-            val updatedQual = etQualification?.text?.toString()?.trim() ?: ""
-            val updatedSkills = etSkills?.text?.toString()?.trim() ?: ""
+        findViewById<EditText>(R.id.etFullName)?.setText(displayName)
+        findViewById<EditText>(R.id.etPhone)?.setText(readSecurePref(prefs, "phone", "+27 82 123 4567"))
+        findViewById<EditText>(R.id.etEducation)?.setText(readSecurePref(prefs, "education", "University of Johannesburg"))
+        findViewById<EditText>(R.id.etQualification)?.setText(readSecurePref(prefs, "qualification", "BSc Information Technology"))
+        findViewById<EditText>(R.id.etSkills)?.setText(readSecurePref(prefs, "skills", "Kotlin, Java, Python, Android Studio, Git"))
+    }
+
+    private fun setupActions() {
+        val btnEditProfile = findViewById<Button>(R.id.btnEditProfile)
+        val layoutEditActions = findViewById<LinearLayout>(R.id.layoutEditActions)
+        val btnCancelEdit = findViewById<Button>(R.id.btnCancelEdit)
+        val btnSaveProfile = findViewById<Button>(R.id.btnSaveProfile)
+        val btnGoToCVBuilder = findViewById<Button>(R.id.btnGoToCVBuilder)
+        val btnLogout = findViewById<Button>(R.id.btnLogout)
+
+        btnEditProfile?.setOnClickListener {
+            setEditMode(true)
+        }
+
+        btnCancelEdit?.setOnClickListener {
+            loadProfileData()
+            clearFieldErrors()
+            setEditMode(false)
+            Toast.makeText(this, "Changes cancelled", Toast.LENGTH_SHORT).show()
+        }
+
+        btnSaveProfile?.setOnClickListener {
+            val user = auth.currentUser
+            val prefs = getSharedPreferences(profilePrefsName(user?.uid), Context.MODE_PRIVATE)
+
+            val etFullName = findViewById<EditText>(R.id.etFullName)
+            val etPhone = findViewById<EditText>(R.id.etPhone)
+            val etEducation = findViewById<EditText>(R.id.etEducation)
+            val etQualification = findViewById<EditText>(R.id.etQualification)
+            val etSkills = findViewById<EditText>(R.id.etSkills)
+
+            val updatedName = etFullName?.text?.toString()?.trim().orEmpty()
+            val updatedPhone = etPhone?.text?.toString()?.trim().orEmpty()
+            val updatedEdu = etEducation?.text?.toString()?.trim().orEmpty()
+            val updatedQual = etQualification?.text?.toString()?.trim().orEmpty()
+            val updatedSkills = etSkills?.text?.toString()?.trim().orEmpty()
 
             if (updatedName.isEmpty()) {
                 etFullName?.error = "Please enter your full name"
                 Toast.makeText(this, "Please enter your full name", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (updatedPhone.isEmpty()) {
+                etPhone?.error = "Please enter your contact number"
+                Toast.makeText(this, "Please enter your contact number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -80,6 +130,7 @@ class ProfileActivity : AppCompatActivity() {
             writeSecurePref(prefs, "qualification", updatedQual)
             writeSecurePref(prefs, "skills", updatedSkills)
 
+            // Update Firebase display name asynchronously (without overriding local precedence)
             user?.updateProfile(
                 UserProfileChangeRequest.Builder()
                     .setDisplayName(updatedName)
@@ -91,13 +142,52 @@ class ProfileActivity : AppCompatActivity() {
                 firebaseDisplayName = user?.displayName,
                 firebaseEmail = user?.email
             )
-            txtProfileName?.text = resolved
+            findViewById<TextView>(R.id.txtProfileName)?.text = resolved
+
+            setEditMode(false)
             Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
         }
 
-        findViewById<Button>(R.id.btnLogout)?.setOnClickListener {
+        btnGoToCVBuilder?.setOnClickListener {
+            startActivity(Intent(this, CVBuilderActivity::class.java))
+        }
+
+        btnLogout?.setOnClickListener {
             showLogoutDialog()
         }
+    }
+
+    private fun setEditMode(enabled: Boolean) {
+        isEditMode = enabled
+
+        val fields = listOf(
+            findViewById<EditText>(R.id.etFullName),
+            findViewById<EditText>(R.id.etPhone),
+            findViewById<EditText>(R.id.etEducation),
+            findViewById<EditText>(R.id.etQualification),
+            findViewById<EditText>(R.id.etSkills)
+        )
+
+        for (field in fields) {
+            field?.isEnabled = enabled
+            field?.isFocusable = enabled
+            field?.isFocusableInTouchMode = enabled
+        }
+
+        if (enabled) {
+            fields.firstOrNull()?.requestFocus()
+        }
+
+        findViewById<View>(R.id.btnEditProfile)?.visibility = if (enabled) View.GONE else View.VISIBLE
+        findViewById<View>(R.id.layoutEditActions)?.visibility = if (enabled) View.VISIBLE else View.GONE
+    }
+
+    private fun clearFieldErrors() {
+        findViewById<EditText>(R.id.etFullName)?.error = null
+        findViewById<EditText>(R.id.etPhone)?.error = null
+        findViewById<EditText>(R.id.etEducation)?.error = null
+        findViewById<EditText>(R.id.etQualification)?.error = null
+        findViewById<EditText>(R.id.etSkills)?.error = null
     }
 
     private fun showLogoutDialog() {
@@ -166,7 +256,6 @@ class ProfileActivity : AppCompatActivity() {
         fun readSecurePref(prefs: SharedPreferences, key: String, defaultValue: String?): String? {
             val raw = prefs.getString(key, null) ?: return defaultValue
             if (!raw.startsWith(ENCRYPTED_PREFIX)) {
-                // Transparently migrate existing plaintext value on next read if KeyStore is available
                 encryptValue(raw)?.let { encrypted ->
                     prefs.edit().putString(key, encrypted).apply()
                 }

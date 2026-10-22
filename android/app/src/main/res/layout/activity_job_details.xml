@@ -56,7 +56,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="20dp"
+        android:padding="16dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintBottom_toTopOf="@id/bottomActions">
@@ -64,7 +64,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
 
             <!-- Company Logo & Title Header Card -->
             <androidx.cardview.widget.CardView
@@ -78,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="24dp"
+                    android:padding="20dp"
                     android:background="@color/white">
 
                     <ImageView
@@ -108,6 +109,7 @@
                         android:textSize="15sp"
                         android:layout_marginTop="4dp" />
 
+                    <!-- Badges Row -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -115,18 +117,19 @@
                         android:layout_marginTop="12dp">
 
                         <TextView
-                            android:id="@+id/txtLocation"
+                            android:id="@+id/txtCategory"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_tag_pill"
-                            android:text="Pretoria, South Africa"
-                            android:textColor="@color/text_muted"
+                            android:text="IT &amp; Tech"
+                            android:textColor="@color/primary_blue"
                             android:textSize="12sp"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:paddingTop="6dp"
-                            android:paddingBottom="6dp"
-                            android:layout_marginEnd="8dp" />
+                            android:textStyle="bold"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:layout_marginEnd="6dp" />
 
                         <TextView
                             android:id="@+id/txtType"
@@ -136,12 +139,46 @@
                             android:text="Full-time • Remote"
                             android:textColor="@color/text_muted"
                             android:textSize="12sp"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:paddingTop="6dp"
-                            android:paddingBottom="6dp" />
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:layout_marginEnd="6dp" />
+
+                        <TextView
+                            android:id="@+id/txtJobStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_tag_pill"
+                            android:text="Not Applied"
+                            android:textColor="@color/accent_teal"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:visibility="gone" />
 
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📍 Pretoria, South Africa"
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                        android:id="@+id/txtPostDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Posted: 2d ago"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp" />
 
                 </LinearLayout>
 
@@ -151,18 +188,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="About the role"
+                android:text="About the Role"
                 android:textColor="@color/text_dark"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                android:layout_marginTop="24dp" />
+                android:layout_marginTop="22dp" />
 
             <TextView
                 android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Role description goes here..."
-                android:textColor="@color/text_muted"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginTop="8dp" />
@@ -173,30 +210,30 @@
                 android:layout_height="wrap_content"
                 android:text="Requirements"
                 android:textColor="@color/text_dark"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                android:layout_marginTop="24dp" />
+                android:layout_marginTop="22dp" />
 
             <TextView
                 android:id="@+id/txtRequirements"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="• Requirement 1\n• Requirement 2"
-                android:textColor="@color/text_muted"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginTop="8dp" />
 
+            <!-- Application Information & Firestore Notice -->
             <TextView
                 android:id="@+id/txtDisclaimer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Note: Applying will redirect you safely to the official employer's application portal."
+                android:text="Note: Tapping Apply will redirect you to the employer's official portal. Live Firestore application sync is pending backend repository integration."
                 android:textColor="@color/text_muted"
                 android:textSize="12sp"
-                android:fontFamily="sans-serif-italic"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp" />
+                android:lineSpacingExtra="2dp"
+                android:layout_marginTop="20dp" />
 
         </LinearLayout>
 
@@ -215,11 +252,11 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnApplyNow"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="52dp"
             android:background="@drawable/bg_btn_primary"
-            android:text="Apply Now (External Site)"
+            android:text="Apply Now (External Portal)"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:textAllCaps="false" />
 
