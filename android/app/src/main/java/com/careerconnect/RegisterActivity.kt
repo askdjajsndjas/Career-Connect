@@ -6,18 +6,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_layout)
 
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
         val txtFullName = findViewById<EditText>(R.id.txtFullName)
         val txtEmail = findViewById<EditText>(R.id.txtEmail)
@@ -48,23 +52,44 @@ class RegisterActivity : AppCompatActivity() {
             btnRegister.isEnabled = false
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
-                    btnRegister.isEnabled = true
-                    if (task.isSuccessful) {
-                        val profile = UserProfileChangeRequest.Builder()
-                            .setDisplayName(name)
-                            .build()
-                        task.result?.user?.updateProfile(profile)
-
-                        Toast.makeText(this, "Account created", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    } else {
+                    if (!task.isSuccessful) {
+                        btnRegister.isEnabled = true
                         Toast.makeText(
                             this,
                             "Registration failed: ${task.exception?.localizedMessage}",
                             Toast.LENGTH_LONG
                         ).show()
+                        return@addOnCompleteListener
                     }
+
+                    val user = task.result?.user
+                    if (user == null) {
+                        btnRegister.isEnabled = true
+                        return@addOnCompleteListener
+                    }
+
+                    user.updateProfile(
+                        UserProfileChangeRequest.Builder().setDisplayName(name).build()
+                    )
+
+                    val profile = hashMapOf(
+                        "fullName" to name,
+                        "email" to email,
+                        "role" to "student",
+                        "createdAt" to Timestamp.now()
+                    )
+                    db.collection("users").document(user.uid).set(profile)
+                        .addOnCompleteListener {
+                            if (!it.isSuccessful) {
+                                Toast.makeText(
+                                    this,
+                                    "Account created, but saving your profile failed",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        }
                 }
         }
 
