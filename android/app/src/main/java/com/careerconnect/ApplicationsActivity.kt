@@ -24,6 +24,7 @@ class ApplicationsActivity : AppCompatActivity() {
     private var activeStageFilter = "All"
     private var firestoreRegistration: ListenerRegistration? = null
     private var firestoreApplications: List<JobApplication> = emptyList()
+    private var firestoreError: String? = null
 
     data class TrackedDisplayItem(
         val jobId: String,
@@ -46,11 +47,14 @@ class ApplicationsActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnBrowseJobs)?.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
+            val intent = Intent(this, JobsActivity::class.java)
             startActivity(intent)
-            finish()
+        }
+
+        findViewById<Button>(R.id.btnRetryApplications)?.setOnClickListener {
+            firestoreError = null
+            findViewById<View>(R.id.layoutErrorApplications)?.visibility = View.GONE
+            subscribeToFirestoreApplications()
         }
 
         setupStageFilterChips()
@@ -75,13 +79,15 @@ class ApplicationsActivity : AppCompatActivity() {
         firestoreRegistration?.remove()
         firestoreRegistration = ApplicationRepository.listenToMyApplications(
             onChange = { apps ->
+                firestoreError = null
                 firestoreApplications = apps
                 for (app in apps) {
                     JobRepository.updateStatus(app.jobId, app.status)
                 }
                 renderTrackedApplications()
             },
-            onError = { _ ->
+            onError = { errMsg ->
+                firestoreError = errMsg
                 renderTrackedApplications()
             }
         )
@@ -252,17 +258,27 @@ class ApplicationsActivity : AppCompatActivity() {
 
         val container = findViewById<LinearLayout>(R.id.appsListContainer)
         val emptyLayout = findViewById<View>(R.id.layoutEmptyApplications)
+        val errorLayout = findViewById<View>(R.id.layoutErrorApplications)
 
         container?.removeAllViews()
 
-        if (filteredItems.isEmpty()) {
-            emptyLayout?.visibility = View.VISIBLE
-            container?.visibility = View.GONE
-        } else {
+        if (firestoreError != null && firestoreApplications.isEmpty()) {
+            errorLayout?.visibility = View.VISIBLE
             emptyLayout?.visibility = View.GONE
-            container?.visibility = View.VISIBLE
-            for (item in filteredItems) {
-                container?.addView(createAppCard(item))
+            container?.visibility = View.GONE
+            findViewById<TextView>(R.id.txtErrorApplicationsMessage)?.text =
+                "Could not sync your applications: $firestoreError"
+        } else {
+            errorLayout?.visibility = View.GONE
+            if (filteredItems.isEmpty()) {
+                emptyLayout?.visibility = View.VISIBLE
+                container?.visibility = View.GONE
+            } else {
+                emptyLayout?.visibility = View.GONE
+                container?.visibility = View.VISIBLE
+                for (item in filteredItems) {
+                    container?.addView(createAppCard(item))
+                }
             }
         }
     }

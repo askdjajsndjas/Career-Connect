@@ -63,11 +63,7 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.cardMetricTotal)?.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
-            finish()
+            startActivity(Intent(this, JobsActivity::class.java))
         }
 
         findViewById<View>(R.id.cardMetricSaved)?.setOnClickListener {
@@ -91,7 +87,7 @@ class DashboardActivity : AppCompatActivity() {
             savedName = savedName,
             firebaseDisplayName = user?.displayName,
             firebaseEmail = user?.email,
-            defaultFirstName = "Amina"
+            defaultFirstName = "Student"
         )
         findViewById<TextView>(R.id.txtSubtitle)?.text = "Welcome to Career Connect, $firstName"
 

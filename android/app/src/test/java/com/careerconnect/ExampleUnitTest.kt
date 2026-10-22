@@ -120,7 +120,7 @@ class ExampleUnitTest {
             firebaseDisplayName = null,
             firebaseEmail = null
         )
-        assertEquals("Amina Dlamini", fallbackToDefault)
+        assertEquals("Student", fallbackToDefault)
     }
 
     @Test
@@ -140,7 +140,15 @@ class ExampleUnitTest {
             )
         )
         assertEquals(
-            "Amina",
+            "test2",
+            ProfileActivity.resolveFirstName(
+                savedName = null,
+                firebaseDisplayName = null,
+                firebaseEmail = "test2@example.com"
+            )
+        )
+        assertEquals(
+            "Student",
             ProfileActivity.resolveFirstName(
                 savedName = null,
                 firebaseDisplayName = null,

@@ -220,7 +220,7 @@ class ProfileActivity : AppCompatActivity() {
             savedName: String?,
             firebaseDisplayName: String?,
             firebaseEmail: String? = null,
-            defaultName: String = "Amina Dlamini"
+            defaultName: String = "Student"
         ): String {
             val cleanedSaved = savedName?.trim()
             if (!cleanedSaved.isNullOrEmpty()) return cleanedSaved
@@ -238,7 +238,7 @@ class ProfileActivity : AppCompatActivity() {
             savedName: String?,
             firebaseDisplayName: String?,
             firebaseEmail: String? = null,
-            defaultFirstName: String = "Amina"
+            defaultFirstName: String = "Student"
         ): String {
             val fullName = resolveFullName(
                 savedName = savedName,

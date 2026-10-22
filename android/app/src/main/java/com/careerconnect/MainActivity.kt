@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             savedName = savedName,
             firebaseDisplayName = user?.displayName,
             firebaseEmail = user?.email,
-            defaultFirstName = "Amina"
+            defaultFirstName = "Student"
         )
         findViewById<TextView>(R.id.txtGreeting)?.text = "Hi, $firstName! 👋"
     }
@@ -91,11 +91,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnExploreJobs)?.setOnClickListener {
-            resetAllFilters()
+            startActivity(Intent(this, JobsActivity::class.java))
         }
 
         findViewById<TextView>(R.id.btnSeeAllRecommended)?.setOnClickListener {
-            resetAllFilters()
+            startActivity(Intent(this, JobsActivity::class.java))
         }
 
         findViewById<TextView>(R.id.btnSeeAllCategories)?.setOnClickListener {
