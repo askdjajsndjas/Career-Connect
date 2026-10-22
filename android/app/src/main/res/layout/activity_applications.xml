@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_gray">
+
+    <!-- Top Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Applications"
+            android:textColor="@color/text_dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Category / Stage Filter Chips -->
+    <HorizontalScrollView
+        android:id="@+id/stageChipsScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:scrollbars="none"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/topBar">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/chipAllApps"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_chip_active"
+                android:text="All"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/chipSavedApps"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_chip_inactive"
+                android:text="Saved"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/chipAppliedApps"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_chip_inactive"
+                android:text="Applied"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/chipInterviewApps"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_chip_inactive"
+                android:text="Interview"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <!-- Applications List / ScrollView -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/stageChipsScroll"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/appsListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Sample Tracked Item 1 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardApp1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:background="@color/white">
+
+                    <ImageView
+                        android:id="@+id/imgAppLogo1"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/ic_company_abc"
+                        android:contentDescription="Company Logo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtAppTitle1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Software Development Intern"
+                        android:textColor="@color/text_dark"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="12dp"
+                        app:layout_constraintStart_toEndOf="@id/imgAppLogo1"
+                        app:layout_constraintEnd_toStartOf="@id/txtAppStatus1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtAppCompany1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="ABC Technologies • Applied on 12 May 2026"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:layout_marginTop="2dp"
+                        app:layout_constraintStart_toStartOf="@id/txtAppTitle1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtAppTitle1" />
+
+                    <TextView
+                        android:id="@+id/txtAppStatus1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_tag_pill"
+                        android:text="Application Started"
+                        android:textColor="@color/primary_blue"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Sample Tracked Item 2 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardApp2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:background="@color/white">
+
+                    <ImageView
+                        android:id="@+id/imgAppLogo2"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/ic_company_bmm"
+                        android:contentDescription="Company Logo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtAppTitle2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Marketing Intern"
+                        android:textColor="@color/text_dark"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="12dp"
+                        app:layout_constraintStart_toEndOf="@id/imgAppLogo2"
+                        app:layout_constraintEnd_toStartOf="@id/txtAppStatus2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtAppCompany2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Bright Minds Media • Saved on 10 May 2026"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:layout_marginTop="2dp"
+                        app:layout_constraintStart_toStartOf="@id/txtAppTitle2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtAppTitle2" />
+
+                    <TextView
+                        android:id="@+id/txtAppStatus2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_tag_pill"
+                        android:text="Saved"
+                        android:textColor="@color/accent_teal"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Container for Additional Tracked Application Cards -->
+            <LinearLayout
+                android:id="@+id/extraAppsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- Empty State when No Tracked Jobs Match the Stage -->
+            <TextView
+                android:id="@+id/txtEmptyApplications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:gravity="center"
+                android:text="No tracked applications in this stage yet.\nBookmark or apply to jobs to track them here."
+                android:textColor="@color/text_muted"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

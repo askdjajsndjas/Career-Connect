@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_gray">
+
+    <!-- Top Header Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Details"
+            android:textColor="@color/text_dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnBookmark"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_bookmark"
+            android:contentDescription="Save Job"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Main Details Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="20dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomActions">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Company Logo & Title Header Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:background="@color/white">
+
+                    <ImageView
+                        android:id="@+id/imgLogo"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/ic_company_abc"
+                        android:contentDescription="Company Logo" />
+
+                    <TextView
+                        android:id="@+id/txtJobTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Software Development Intern"
+                        android:textColor="@color/text_dark"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginTop="12dp" />
+
+                    <TextView
+                        android:id="@+id/txtCompany"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ABC Technologies"
+                        android:textColor="@color/text_muted"
+                        android:textSize="15sp"
+                        android:layout_marginTop="4dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="12dp">
+
+                        <TextView
+                            android:id="@+id/txtLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_tag_pill"
+                            android:text="Pretoria, South Africa"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:layout_marginEnd="8dp" />
+
+                        <TextView
+                            android:id="@+id/txtType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_tag_pill"
+                            android:text="Full-time • Remote"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- About the Role Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About the role"
+                android:textColor="@color/text_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp" />
+
+            <TextView
+                android:id="@+id/txtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Role description goes here..."
+                android:textColor="@color/text_muted"
+                android:textSize="14sp"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginTop="8dp" />
+
+            <!-- Requirements Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Requirements"
+                android:textColor="@color/text_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp" />
+
+            <TextView
+                android:id="@+id/txtRequirements"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Requirement 1\n• Requirement 2"
+                android:textColor="@color/text_muted"
+                android:textSize="14sp"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/txtDisclaimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Note: Applying will redirect you safely to the official employer's application portal."
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-italic"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Action Button -->
+    <LinearLayout
+        android:id="@+id/bottomActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="16dp"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnApplyNow"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_btn_primary"
+            android:text="Apply Now (External Site)"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
