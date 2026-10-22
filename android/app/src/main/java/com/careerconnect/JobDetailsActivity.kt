@@ -79,45 +79,71 @@ class JobDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
 
-        findViewById<Button>(R.id.btnApplyNow)?.setOnClickListener {
-            val url = job.applicationUrl
-            if (url.isNotBlank() && (url.startsWith("http://") || url.startsWith("https://"))) {
-                JobRepository.updateStatus(job.id, "Application Started")
-                updateStatusBadge(job)
-                Toast.makeText(
-                    this,
-                    "Opening employer portal. Live Firestore tracking pending repository integration.",
-                    Toast.LENGTH_LONG
-                ).show()
+        val btnApplyNow = findViewById<Button>(R.id.btnApplyNow)
+        btnApplyNow?.setOnClickListener {
+            btnApplyNow.isEnabled = false
+            Toast.makeText(this, "Submitting application...", Toast.LENGTH_SHORT).show()
 
-                try {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
-                    Toast.makeText(this, "No web browser installed to open this link.", Toast.LENGTH_SHORT).show()
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Unable to launch external portal: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            ApplicationRepository.applyToJob(
+                jobId = job.id,
+                jobTitle = job.title,
+                company = job.company,
+                employerId = "demo"
+            ) { success, errorMsg ->
+                btnApplyNow.isEnabled = true
+                if (success) {
+                    JobRepository.updateStatus(job.id, ApplicationRepository.PENDING)
+                    val refreshed = JobRepository.getJobById(job.id) ?: job
+                    currentJob = refreshed
+                    updateStatusBadge(refreshed)
+                    Toast.makeText(this, "Application submitted successfully!", Toast.LENGTH_SHORT).show()
+
+                    val url = job.applicationUrl
+                    if (url.isNotBlank() && (url.startsWith("http://") || url.startsWith("https://"))) {
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            startActivity(intent)
+                        } catch (e: ActivityNotFoundException) {
+                            // Browser not installed
+                        } catch (e: Exception) {
+                            // External browser launch failed
+                        }
+                    }
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Application failed: ${errorMsg ?: "Unknown error"}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-            } else {
-                Toast.makeText(this, "Application portal link is unavailable for this role.", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun updateStatusBadge(job: JobListing) {
         val txtJobStatus = findViewById<TextView>(R.id.txtJobStatus) ?: return
-        val displayStatus = if (job.applicationStatus == "Not Applied" && job.isSaved) {
+        val rawStatus = if (job.applicationStatus == "Not Applied" && job.isSaved) {
             "Saved"
         } else {
             job.applicationStatus
         }
 
-        if (displayStatus != "Not Applied") {
+        if (rawStatus != "Not Applied") {
             txtJobStatus.visibility = View.VISIBLE
-            txtJobStatus.text = displayStatus
-            val color = when (displayStatus.lowercase()) {
-                "saved" -> R.color.accent_teal
-                "interview" -> R.color.primary_blue_light
+            val displayLabel = when (rawStatus) {
+                ApplicationRepository.PENDING -> "Pending"
+                ApplicationRepository.INTERVIEW -> "Interview"
+                ApplicationRepository.REJECTED -> "Rejected"
+                ApplicationRepository.ARCHIVED -> "Archived"
+                "Application Started" -> "Pending"
+                else -> rawStatus
+            }
+            txtJobStatus.text = displayLabel
+            val color = when (rawStatus) {
+                "Saved" -> R.color.accent_teal
+                ApplicationRepository.INTERVIEW -> R.color.primary_blue_light
+                ApplicationRepository.REJECTED -> R.color.text_muted
+                ApplicationRepository.ARCHIVED -> R.color.text_muted
                 else -> R.color.primary_blue
             }
             txtJobStatus.setTextColor(ContextCompat.getColor(this, color))

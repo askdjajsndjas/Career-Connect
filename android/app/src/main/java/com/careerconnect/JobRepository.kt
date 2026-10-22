@@ -129,11 +129,13 @@ object JobRepository {
                 it.isSaved || it.applicationStatus.equals("Saved", ignoreCase = true)
             }
             "Applied" -> tracked.filter {
-                it.applicationStatus.equals("Applied", ignoreCase = true) ||
+                it.applicationStatus.equals(ApplicationRepository.PENDING, ignoreCase = true) ||
+                    it.applicationStatus.equals("Applied", ignoreCase = true) ||
                     it.applicationStatus.equals("Application Started", ignoreCase = true)
             }
             "Interview" -> tracked.filter {
-                it.applicationStatus.equals("Interview", ignoreCase = true)
+                it.applicationStatus.equals(ApplicationRepository.INTERVIEW, ignoreCase = true) ||
+                    it.applicationStatus.equals("Interview", ignoreCase = true)
             }
             else -> tracked.filter { it.applicationStatus.equals(stage, ignoreCase = true) }
         }

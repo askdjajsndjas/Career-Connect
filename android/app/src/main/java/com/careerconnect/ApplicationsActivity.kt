@@ -17,10 +17,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.ListenerRegistration
 
 class ApplicationsActivity : AppCompatActivity() {
 
     private var activeStageFilter = "All"
+    private var firestoreRegistration: ListenerRegistration? = null
+    private var firestoreApplications: List<JobApplication> = emptyList()
+
+    data class TrackedDisplayItem(
+        val jobId: String,
+        val title: String,
+        val company: String,
+        val location: String,
+        val employmentType: String,
+        val logoRes: Int,
+        val statusRaw: String,
+        val statusLabel: String,
+        val isFirestore: Boolean
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +56,35 @@ class ApplicationsActivity : AppCompatActivity() {
         setupStageFilterChips()
         setupStatCards()
         setupBottomNav()
-        renderTrackedApplications()
+        subscribeToFirestoreApplications()
     }
 
     override fun onResume() {
         super.onResume()
         findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.selectedItemId = R.id.nav_applications
         renderTrackedApplications()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        firestoreRegistration?.remove()
+        firestoreRegistration = null
+    }
+
+    private fun subscribeToFirestoreApplications() {
+        firestoreRegistration?.remove()
+        firestoreRegistration = ApplicationRepository.listenToMyApplications(
+            onChange = { apps ->
+                firestoreApplications = apps
+                for (app in apps) {
+                    JobRepository.updateStatus(app.jobId, app.status)
+                }
+                renderTrackedApplications()
+            },
+            onError = { _ ->
+                renderTrackedApplications()
+            }
+        )
     }
 
     private fun setupBottomNav() {
@@ -123,34 +160,114 @@ class ApplicationsActivity : AppCompatActivity() {
     }
 
     private fun renderTrackedApplications() {
-        // Update summary metrics from JobRepository
-        val savedCount = JobRepository.getTrackedJobs("Saved").size
-        val appliedCount = JobRepository.getTrackedJobs("Applied").size
-        val interviewCount = JobRepository.getTrackedJobs("Interview").size
+        val allItems = mutableListOf<TrackedDisplayItem>()
+        val firestoreJobIds = mutableSetOf<String>()
+
+        for (app in firestoreApplications) {
+            firestoreJobIds.add(app.jobId)
+            val job = JobRepository.getJobById(app.jobId)
+            val title = if (app.jobTitle.isNotBlank()) app.jobTitle else (job?.title ?: "Application")
+            val company = if (app.company.isNotBlank()) app.company else (job?.company ?: "Company")
+            val location = job?.location ?: "South Africa"
+            val employmentType = job?.employmentType ?: "Full-time"
+            val logoRes = job?.companyLogoRes ?: R.drawable.ic_company_abc
+
+            val statusLabel = when (app.status) {
+                ApplicationRepository.INTERVIEW -> "Interview"
+                ApplicationRepository.REJECTED -> "Rejected"
+                ApplicationRepository.ARCHIVED -> "Archived"
+                else -> "Pending"
+            }
+
+            allItems.add(
+                TrackedDisplayItem(
+                    jobId = app.jobId,
+                    title = title,
+                    company = company,
+                    location = location,
+                    employmentType = employmentType,
+                    logoRes = logoRes,
+                    statusRaw = app.status,
+                    statusLabel = statusLabel,
+                    isFirestore = true
+                )
+            )
+        }
+
+        // Add local saved jobs (bookmarks) that are not already tracked in Firestore
+        val savedJobs = JobRepository.getTrackedJobs("Saved")
+        for (job in savedJobs) {
+            if (!firestoreJobIds.contains(job.id)) {
+                allItems.add(
+                    TrackedDisplayItem(
+                        jobId = job.id,
+                        title = job.title,
+                        company = job.company,
+                        location = job.location,
+                        employmentType = job.employmentType,
+                        logoRes = job.companyLogoRes,
+                        statusRaw = "Saved",
+                        statusLabel = "Saved",
+                        isFirestore = false
+                    )
+                )
+            }
+        }
+
+        // Summary metric counts: Saved (local bookmarks), Applied (Firestore PENDING), Interview (Firestore INTERVIEW)
+        val savedCount = savedJobs.size
+        val appliedCount = firestoreApplications.count {
+            it.status.equals(ApplicationRepository.PENDING, ignoreCase = true) ||
+                it.status.equals("Applied", ignoreCase = true)
+        }
+        val interviewCount = firestoreApplications.count {
+            it.status.equals(ApplicationRepository.INTERVIEW, ignoreCase = true) ||
+                it.status.equals("Interview", ignoreCase = true)
+        }
 
         findViewById<TextView>(R.id.txtCountSaved)?.text = savedCount.toString()
         findViewById<TextView>(R.id.txtCountApplied)?.text = appliedCount.toString()
         findViewById<TextView>(R.id.txtCountInterview)?.text = interviewCount.toString()
 
-        val trackedJobs = JobRepository.getTrackedJobs(activeStageFilter)
+        val filteredItems = when (activeStageFilter) {
+            "All" -> allItems
+            "Saved" -> allItems.filter { !it.isFirestore || JobRepository.getJobById(it.jobId)?.isSaved == true }
+            "Applied" -> allItems.filter {
+                it.statusRaw.equals(ApplicationRepository.PENDING, ignoreCase = true) ||
+                    it.statusRaw.equals("Applied", ignoreCase = true) ||
+                    it.statusRaw.equals("Application Started", ignoreCase = true)
+            }
+            "Interview" -> allItems.filter {
+                it.statusRaw.equals(ApplicationRepository.INTERVIEW, ignoreCase = true) ||
+                    it.statusRaw.equals("Interview", ignoreCase = true)
+            }
+            "Rejected" -> allItems.filter {
+                it.statusRaw.equals(ApplicationRepository.REJECTED, ignoreCase = true)
+            }
+            "Archived" -> allItems.filter {
+                it.statusRaw.equals(ApplicationRepository.ARCHIVED, ignoreCase = true)
+            }
+            else -> allItems
+        }
+
         val container = findViewById<LinearLayout>(R.id.appsListContainer)
         val emptyLayout = findViewById<View>(R.id.layoutEmptyApplications)
 
         container?.removeAllViews()
 
-        if (trackedJobs.isEmpty()) {
+        if (filteredItems.isEmpty()) {
             emptyLayout?.visibility = View.VISIBLE
             container?.visibility = View.GONE
         } else {
             emptyLayout?.visibility = View.GONE
             container?.visibility = View.VISIBLE
-            for (job in trackedJobs) {
-                container?.addView(createAppCard(job))
+            for (item in filteredItems) {
+                container?.addView(createAppCard(item))
             }
         }
     }
 
-    private fun createAppCard(job: JobListing): CardView {
+    private fun createAppCard(item: TrackedDisplayItem): CardView {
         val cardView = CardView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -176,7 +293,7 @@ class ApplicationsActivity : AppCompatActivity() {
 
         val logoView = ImageView(this).apply {
             layoutParams = LinearLayout.LayoutParams(dpToPx(44), dpToPx(44))
-            setImageResource(job.companyLogoRes)
+            setImageResource(item.logoRes)
             contentDescription = "Company Logo"
         }
 
@@ -189,7 +306,7 @@ class ApplicationsActivity : AppCompatActivity() {
         }
 
         val titleView = TextView(this).apply {
-            text = job.title
+            text = item.title
             setTextColor(ContextCompat.getColor(this@ApplicationsActivity, R.color.text_dark))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
             setTypeface(null, Typeface.BOLD)
@@ -202,7 +319,7 @@ class ApplicationsActivity : AppCompatActivity() {
             ).apply {
                 topMargin = dpToPx(2)
             }
-            text = "${job.company} • ${job.location} • ${job.employmentType}"
+            text = "${item.company} • ${item.location} • ${item.employmentType}"
             setTextColor(ContextCompat.getColor(this@ApplicationsActivity, R.color.text_muted))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         }
@@ -210,10 +327,10 @@ class ApplicationsActivity : AppCompatActivity() {
         middleColumn.addView(titleView)
         middleColumn.addView(companyView)
 
-        val displayStatus = resolveDisplayStatus(job)
-        val statusColor = when (displayStatus.lowercase()) {
+        val statusColor = when (item.statusLabel.lowercase()) {
             "saved" -> R.color.accent_teal
             "interview" -> R.color.primary_blue_light
+            "rejected", "archived" -> R.color.text_muted
             else -> R.color.primary_blue
         }
 
@@ -223,13 +340,13 @@ class ApplicationsActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             setBackgroundResource(R.drawable.bg_tag_pill)
-            text = displayStatus
+            text = item.statusLabel
             setTextColor(ContextCompat.getColor(this@ApplicationsActivity, statusColor))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
             setTypeface(null, Typeface.BOLD)
             setPadding(dpToPx(10), dpToPx(5), dpToPx(10), dpToPx(5))
             setOnClickListener {
-                showUpdateStatusDialog(job)
+                showStatusDetailDialog(item)
             }
         }
 
@@ -240,7 +357,7 @@ class ApplicationsActivity : AppCompatActivity() {
 
         cardView.setOnClickListener {
             val intent = Intent(this, JobDetailsActivity::class.java).apply {
-                putExtra("EXTRA_JOB_ID", job.id)
+                putExtra("EXTRA_JOB_ID", item.jobId)
             }
             startActivity(intent)
         }
@@ -248,31 +365,37 @@ class ApplicationsActivity : AppCompatActivity() {
         return cardView
     }
 
-    private fun resolveDisplayStatus(job: JobListing): String {
-        return if (job.applicationStatus == "Not Applied" && job.isSaved) {
-            "Saved"
-        } else {
-            job.applicationStatus
-        }
-    }
-
-    private fun showUpdateStatusDialog(job: JobListing) {
-        val options = arrayOf("Saved", "Application Started", "Applied", "Interview", "Remove from Tracked")
-        AlertDialog.Builder(this)
-            .setTitle("Update Status: ${job.title}")
-            .setItems(options) { _, which ->
-                if (which == 4) {
-                    JobRepository.updateStatus(job.id, "Not Applied")
-                    Toast.makeText(this, "Removed from tracked applications", Toast.LENGTH_SHORT).show()
-                } else {
-                    val newStatus = options[which]
-                    JobRepository.updateStatus(job.id, newStatus)
-                    Toast.makeText(this, "Status updated to $newStatus", Toast.LENGTH_SHORT).show()
+    private fun showStatusDetailDialog(item: TrackedDisplayItem) {
+        if (item.isFirestore) {
+            AlertDialog.Builder(this)
+                .setTitle("${item.title} — ${item.company}")
+                .setMessage("Status: ${item.statusLabel}\n\nTracked live via Cloud Firestore. Any status updates from the employer will reflect here.")
+                .setPositiveButton("View Job Details") { _, _ ->
+                    val intent = Intent(this, JobDetailsActivity::class.java).apply {
+                        putExtra("EXTRA_JOB_ID", item.jobId)
+                    }
+                    startActivity(intent)
                 }
-                renderTrackedApplications()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+                .setNegativeButton("Close", null)
+                .show()
+        } else {
+            AlertDialog.Builder(this)
+                .setTitle("${item.title} — ${item.company}")
+                .setMessage("This role is bookmarked in your Saved list.")
+                .setPositiveButton("View Job & Apply") { _, _ ->
+                    val intent = Intent(this, JobDetailsActivity::class.java).apply {
+                        putExtra("EXTRA_JOB_ID", item.jobId)
+                    }
+                    startActivity(intent)
+                }
+                .setNeutralButton("Remove Bookmark") { _, _ ->
+                    JobRepository.toggleSaved(item.jobId)
+                    renderTrackedApplications()
+                    Toast.makeText(this, "Removed from bookmarks", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
     }
 
     private fun dpToPx(dp: Int): Int {

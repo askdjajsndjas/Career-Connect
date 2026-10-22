@@ -229,7 +229,7 @@
                 android:id="@+id/txtDisclaimer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Note: Tapping Apply will redirect you to the employer's official portal. Live Firestore application sync is pending backend repository integration."
+                android:text="Note: Tapping Apply submits your application to Career Connect and opens the employer's official portal."
                 android:textColor="@color/text_muted"
                 android:textSize="12sp"
                 android:lineSpacingExtra="2dp"

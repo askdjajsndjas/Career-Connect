@@ -195,6 +195,7 @@ class ProfileActivity : AppCompatActivity() {
             .setTitle("Log Out")
             .setMessage("Are you sure you want to log out of Career Connect?")
             .setPositiveButton("Log Out") { _, _ ->
+                StatusNotifier.stop()
                 auth.signOut()
                 Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, WelcomeActivity::class.java)

@@ -172,4 +172,16 @@ class ExampleUnitTest {
         assertTrue(preview.contains("WORK & PROJECT EXPERIENCE"))
         assertTrue(preview.contains("Built Career Connect Android application."))
     }
+
+    @Test
+    fun jobRepository_supportsFirestoreApplicationStatuses() {
+        JobRepository.updateStatus("job_1", ApplicationRepository.PENDING)
+        JobRepository.updateStatus("job_2", ApplicationRepository.INTERVIEW)
+
+        val applied = JobRepository.getTrackedJobs("Applied")
+        val interview = JobRepository.getTrackedJobs("Interview")
+
+        assertTrue(applied.any { it.id == "job_1" })
+        assertTrue(interview.any { it.id == "job_2" })
+    }
 }
