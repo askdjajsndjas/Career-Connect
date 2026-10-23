@@ -1,161 +1,150 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="100%" height="auto">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="100%" height="auto">
   <defs>
     <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0F172A"/>
-      <stop offset="100%" stop-color="#0B132B"/>
+      <stop offset="0%" stop-color="#0B132B"/>
+      <stop offset="100%" stop-color="#060B18"/>
     </linearGradient>
 
     <linearGradient id="innerCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1E293B"/>
-      <stop offset="100%" stop-color="#111827"/>
+      <stop offset="0%" stop-color="#111C35"/>
+      <stop offset="100%" stop-color="#091020"/>
     </linearGradient>
 
     <linearGradient id="blueAccent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#0284C7"/>
-      <stop offset="100%" stop-color="#38BDF8"/>
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
     </linearGradient>
 
-    <pattern id="archGrid" width="30" height="30" patternUnits="userSpaceOnUse">
-      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#1E293B" stroke-width="0.5" stroke-opacity="0.4"/>
+    <pattern id="archGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#1E293B" stroke-width="0.6" stroke-opacity="0.4"/>
     </pattern>
 
     <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
       <polygon points="0 0, 8 3, 0 6" fill="#38BDF8"/>
     </marker>
-    <marker id="arrowheadMuted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <polygon points="0 0, 8 3, 0 6" fill="#64748B"/>
-    </marker>
   </defs>
 
   <!-- Background Base -->
-  <rect width="1100" height="520" rx="12" fill="#070B14"/>
-  <rect width="1100" height="520" rx="12" fill="url(#archGrid)"/>
-  <rect width="1100" height="520" rx="12" fill="none" stroke="#1E293B" stroke-width="1.5"/>
+  <rect width="1100" height="540" rx="14" fill="#040710"/>
+  <rect width="1100" height="540" rx="14" fill="url(#archGrid)"/>
+  <rect width="1100" height="540" rx="14" fill="none" stroke="#1E293B" stroke-width="1.5"/>
+  <rect x="0" y="0" width="1100" height="3" fill="url(#blueAccent)"/>
 
   <!-- Diagram Title Header -->
-  <text x="40" y="44" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" letter-spacing="2.5" fill="#38BDF8">SYSTEM ARCHITECTURE</text>
-  <text x="40" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="800" fill="#F8FAFC">Career Connect Mobile &amp; Cloud Topology</text>
+  <text x="40" y="42" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="700" letter-spacing="2.5" fill="#38BDF8">CHAPTER 04 // SYSTEM ARCHITECTURE &amp; SECURITY TOPOLOGY</text>
+  <text x="40" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="21" font-weight="800" fill="#F8FAFC">Career Connect Native Android Client, Cloud Firestore &amp; Remotive Pipeline</text>
 
   <!-- ============================================================== -->
   <!-- ZONE 1: ANDROID CLIENT APPLICATION                             -->
   <!-- ============================================================== -->
-  <rect x="40" y="95" width="530" height="395" rx="10" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2"/>
-  
+  <rect x="40" y="95" width="530" height="412" rx="10" fill="url(#cardGrad)" stroke="#1E293B" stroke-width="1.5"/>
+
   <!-- Zone Header -->
-  <rect x="40" y="95" width="530" height="38" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-  <rect x="40" y="125" width="530" height="8" fill="#1E293B"/>
+  <rect x="40" y="95" width="530" height="38" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
   <circle cx="62" cy="114" r="5" fill="#38BDF8"/>
-  <text x="76" y="119" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1" fill="#E2E8F0">ANDROID CLIENT LAYER (Kotlin 1.9 &bull; MinSdk 24 &bull; TargetSdk 34)</text>
+  <text x="76" y="118" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" font-weight="700" fill="#F8FAFC">ANDROID CLIENT LAYER (Kotlin 2.2 &bull; MinSdk 24 &bull; Compile/TargetSdk 37)</text>
 
   <!-- UI & Presentation Layer Block -->
-  <rect x="60" y="148" width="490" height="98" rx="6" fill="url(#innerCardGrad)" stroke="#334155" stroke-width="0.8"/>
-  <text x="75" y="168" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#94A3B8">UI / VIEW BINDING ACTIVITIES</text>
-  
-  <!-- Activity badges -->
+  <rect x="60" y="148" width="490" height="102" rx="6" fill="url(#innerCardGrad)" stroke="#1E293B" stroke-width="1"/>
+  <text x="75" y="168" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" font-weight="700" letter-spacing="1.2" fill="#BAE6FD">UI PRESENTATION LAYER (XML Views &bull; Material Components)</text>
+
   <g transform="translate(75, 180)">
-    <rect width="105" height="24" rx="4" fill="#0F172A" stroke="#38BDF8" stroke-width="0.75"/>
-    <text x="8" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#F1F5F9">Welcome &bull; Login</text>
+    <rect width="108" height="24" rx="4" fill="#060B18" stroke="#38BDF8" stroke-width="0.8"/>
+    <text x="54" y="16" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#F8FAFC">Welcome &bull; Login</text>
 
-    <rect x="115" width="115" height="24" rx="4" fill="#0F172A" stroke="#38BDF8" stroke-width="0.75"/>
-    <text x="123" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#F1F5F9">Main SA Job Feed</text>
+    <rect x="116" width="116" height="24" rx="4" fill="#060B18" stroke="#38BDF8" stroke-width="0.8"/>
+    <text x="174" y="16" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#F8FAFC">Main SA Job Feed</text>
 
-    <rect x="240" width="105" height="24" rx="4" fill="#0F172A" stroke="#38BDF8" stroke-width="0.75"/>
-    <text x="248" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#F1F5F9">Remotive Board</text>
+    <rect x="240" width="108" height="24" rx="4" fill="#060B18" stroke="#38BDF8" stroke-width="0.8"/>
+    <text x="294" y="16" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#F8FAFC">Remotive Feed</text>
 
-    <rect x="355" width="105" height="24" rx="4" fill="#0F172A" stroke="#38BDF8" stroke-width="0.75"/>
-    <text x="363" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#F1F5F9">Job Details Screen</text>
+    <rect x="356" width="104" height="24" rx="4" fill="#060B18" stroke="#38BDF8" stroke-width="0.8"/>
+    <text x="408" y="16" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#F8FAFC">JobDetails Screen</text>
   </g>
   <g transform="translate(75, 212)">
-    <rect width="135" height="24" rx="4" fill="#0F172A" stroke="#475569" stroke-width="0.75"/>
-    <text x="8" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#CBD5E1">Applications Tracker</text>
+    <rect width="142" height="24" rx="4" fill="#060B18" stroke="#334155" stroke-width="0.8"/>
+    <text x="71" y="16" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#BAE6FD">ApplicationsActivity</text>
 
-    <rect x="145" width="145" height="24" rx="4" fill="#0F172A" stroke="#475569" stroke-width="0.75"/>
-    <text x="153" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#CBD5E1">Encrypted Profile &bull; CV</text>
+    <rect x="150" width="146" height="24" rx="4" fill="#060B18" stroke="#334155" stroke-width="0.8"/>
+    <text x="223" y="16" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#BAE6FD">Profile &amp; CVBuilder</text>
 
-    <rect x="300" width="160" height="24" rx="4" fill="#0F172A" stroke="#475569" stroke-width="0.75"/>
-    <text x="308" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#CBD5E1">Dynamic Pathway Chips</text>
+    <rect x="304" width="156" height="24" rx="4" fill="#060B18" stroke="#334155" stroke-width="0.8"/>
+    <text x="382" y="16" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#BAE6FD">6 Career Pathway Chips</text>
   </g>
 
   <!-- Business Logic & Repositories Block -->
-  <rect x="60" y="260" width="490" height="110" rx="6" fill="url(#innerCardGrad)" stroke="#334155" stroke-width="0.8"/>
-  <text x="75" y="280" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#94A3B8">BUSINESS LOGIC &amp; REPOSITORIES</text>
+  <rect x="60" y="264" width="490" height="114" rx="6" fill="url(#innerCardGrad)" stroke="#1E293B" stroke-width="1"/>
+  <text x="75" y="284" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" font-weight="700" letter-spacing="1.2" fill="#BAE6FD">DOMAIN REPOSITORIES &amp; STATE MACHINE</text>
 
-  <g transform="translate(75, 292)">
-    <!-- ApplicationRepository -->
-    <rect width="225" height="66" rx="4" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
-    <text x="12" y="20" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#38BDF8">ApplicationRepository</text>
-    <text x="12" y="36" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Composite Doc ID (studentId_jobId)</text>
-    <text x="12" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; 14-Day Stale Auto-Archive &amp; Snapshot</text>
+  <g transform="translate(75, 296)">
+    <rect width="225" height="68" rx="4" fill="#060B18" stroke="#1E293B" stroke-width="1"/>
+    <text x="12" y="19" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" font-weight="700" fill="#38BDF8">JobRepository &amp; AppRepo</text>
+    <text x="12" y="36" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; 14 SA curated roles + Eligibility Tagging</text>
+    <text x="12" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Composite ID (studentId_jobId) + 14d archive</text>
 
-    <!-- StatusRules & StatusNotifier -->
-    <rect x="235" width="225" height="66" rx="4" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
-    <text x="247" y="20" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#38BDF8">StatusRules &amp; Notifier</text>
-    <text x="247" y="36" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Valid transitions: PENDING&rarr;INTERVIEW</text>
-    <text x="247" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; NotificationManager System Alerts</text>
+    <rect x="235" width="225" height="68" rx="4" fill="#060B18" stroke="#1E293B" stroke-width="1"/>
+    <text x="247" y="19" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" font-weight="700" fill="#38BDF8">StatusRules &amp; StatusNotifier</text>
+    <text x="247" y="36" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Enforces PENDING&rarr;INTERVIEW/OFFER</text>
+    <text x="247" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Firestore SnapshotListener diffing</text>
   </g>
 
   <!-- Local Security & Device Storage Block -->
-  <rect x="60" y="382" width="490" height="92" rx="6" fill="url(#innerCardGrad)" stroke="#334155" stroke-width="0.8"/>
-  <text x="75" y="402" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#10B981">DEVICE HARDWARE SECURITY &amp; NOTIFICATIONS</text>
+  <rect x="60" y="392" width="490" height="98" rx="6" fill="url(#innerCardGrad)" stroke="#1E293B" stroke-width="1"/>
+  <text x="75" y="412" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" font-weight="700" letter-spacing="1.2" fill="#38BDF8">DEVICE CRYPTOGRAPHY &amp; LOCAL NOTIFICATIONS</text>
 
-  <g transform="translate(75, 414)">
-    <rect width="225" height="48" rx="4" fill="#0F172A" stroke="#059669" stroke-width="0.75"/>
-    <text x="12" y="19" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#A7F3D0">AndroidKeyStore (AES-256-GCM)</text>
-    <text x="12" y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" fill="#94A3B8">EncryptedSharedPreferences (Profile)</text>
+  <g transform="translate(75, 424)">
+    <rect width="225" height="52" rx="4" fill="#060B18" stroke="#0284C7" stroke-width="0.9"/>
+    <text x="12" y="19" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" font-weight="700" fill="#BAE6FD">AndroidKeyStore AES-256-GCM</text>
+    <text x="12" y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" fill="#94A3B8">Key: career_connect_prefs_aes_key</text>
+    <text x="12" y="47" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="8.5" fill="#64748B">Format: enc:v1:&lt;ivB64&gt;:&lt;cipherB64&gt;</text>
 
-    <rect x="235" width="225" height="48" rx="4" fill="#0F172A" stroke="#0284C7" stroke-width="0.75"/>
-    <text x="247" y="19" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#BAE6FD">Android NotificationManager</text>
-    <text x="247" y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" fill="#94A3B8">Channel: career_connect_notifications</text>
+    <rect x="235" width="225" height="52" rx="4" fill="#060B18" stroke="#0284C7" stroke-width="0.9"/>
+    <text x="247" y="19" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" font-weight="700" fill="#BAE6FD">NotificationManagerCompat</text>
+    <text x="247" y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" fill="#94A3B8">Channel ID: "application_status"</text>
+    <text x="247" y="47" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="8.5" fill="#64748B">Guarded by POST_NOTIFICATIONS (API 33+)</text>
   </g>
 
   <!-- ============================================================== -->
   <!-- ZONE 2: GOOGLE FIREBASE BACKEND (africa-south1)               -->
   <!-- ============================================================== -->
-  <rect x="610" y="95" width="450" height="225" rx="10" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2"/>
-  
-  <!-- Firebase Header -->
-  <rect x="610" y="95" width="450" height="38" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-  <rect x="610" y="125" width="450" height="8" fill="#1E293B"/>
-  <circle cx="632" cy="114" r="5" fill="#F59E0B"/>
-  <text x="646" y="119" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1" fill="#E2E8F0">FIREBASE CLOUD BACKEND (africa-south1 &bull; JHB)</text>
+  <rect x="610" y="95" width="450" height="232" rx="10" fill="url(#cardGrad)" stroke="#1E293B" stroke-width="1.5"/>
 
-  <!-- Firebase Auth Card -->
-  <rect x="630" y="148" width="410" height="66" rx="6" fill="url(#innerCardGrad)" stroke="#334155" stroke-width="0.8"/>
-  <text x="645" y="170" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="700" fill="#FCD34D">Firebase Authentication</text>
-  <text x="645" y="188" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Email &amp; Password Verification with Client Session Caching</text>
-  <text x="645" y="202" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Enforces role: 'student' on self-registration</text>
+  <rect x="610" y="95" width="450" height="38" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+  <circle cx="632" cy="114" r="5" fill="#0284C7"/>
+  <text x="646" y="118" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" font-weight="700" fill="#F8FAFC">FIREBASE CLOUD BACKEND (africa-south1 &bull; Johannesburg)</text>
 
-  <!-- Cloud Firestore Card -->
-  <rect x="630" y="224" width="410" height="84" rx="6" fill="url(#innerCardGrad)" stroke="#334155" stroke-width="0.8"/>
-  <text x="645" y="244" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="700" fill="#38BDF8">Cloud Firestore &amp; Declarative Rules (firestore.rules)</text>
-  <text x="645" y="262" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; /users/{uid} &bull; /jobs/{jobId} &bull; /applications/{studentId_jobId}</text>
-  <text x="645" y="278" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Employer Isolation: request.auth.uid == resource.data.employerId</text>
-  <text x="645" y="294" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Client Deletions Disabled (allow delete: if false)</text>
+  <rect x="630" y="148" width="410" height="68" rx="6" fill="url(#innerCardGrad)" stroke="#1E293B" stroke-width="1"/>
+  <text x="645" y="169" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="700" fill="#BAE6FD">Firebase Authentication (BoM 34.7.0)</text>
+  <text x="645" y="187" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Email/Password Auth + Session Persistence</text>
+  <text x="645" y="203" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Self-registration enforces role == 'student' in Firestore</text>
+
+  <rect x="630" y="226" width="410" height="86" rx="6" fill="url(#innerCardGrad)" stroke="#1E293B" stroke-width="1"/>
+  <text x="645" y="246" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="700" fill="#38BDF8">Cloud Firestore &amp; Security Rules (firestore.rules)</text>
+  <text x="645" y="264" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Collections: /users/{uid}, /jobs/{jobId}, /applications/{id}</text>
+  <text x="645" y="280" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Student read/update own apps; Employer status updates by UID</text>
+  <text x="645" y="296" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Client-side document deletion strictly forbidden (allow delete: if false)</text>
 
   <!-- ============================================================== -->
   <!-- ZONE 3: EXTERNAL REST API (REMOTIVE)                           -->
   <!-- ============================================================== -->
-  <rect x="610" y="338" width="450" height="152" rx="10" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2"/>
-  
-  <!-- External API Header -->
-  <rect x="610" y="338" width="450" height="38" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-  <rect x="610" y="368" width="450" height="8" fill="#1E293B"/>
-  <circle cx="632" cy="357" r="5" fill="#38BDF8"/>
-  <text x="646" y="362" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1" fill="#E2E8F0">EXTERNAL PUBLIC API (remotive.com)</text>
+  <rect x="610" y="345" width="450" height="162" rx="10" fill="url(#cardGrad)" stroke="#1E293B" stroke-width="1.5"/>
 
-  <rect x="630" y="390" width="410" height="88" rx="6" fill="url(#innerCardGrad)" stroke="#334155" stroke-width="0.8"/>
-  <text x="645" y="410" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="700" fill="#38BDF8">Retrofit 2 &amp; Gson Client (JobApi.kt)</text>
-  <text x="645" y="428" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Endpoint: https://remotive.com/api/remote-jobs (24h delayed)</text>
-  <text x="645" y="444" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; SA Eligibility Filter: discards USA/North-America restricted postings</text>
-  <text x="645" y="460" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Attribution compliance: on-screen credit + direct links</text>
+  <rect x="610" y="345" width="450" height="38" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+  <circle cx="632" cy="364" r="5" fill="#38BDF8"/>
+  <text x="646" y="368" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" font-weight="700" fill="#F8FAFC">REMOTIVE PUBLIC REST API (remotive.com)</text>
+
+  <rect x="630" y="398" width="410" height="92" rx="6" fill="url(#innerCardGrad)" stroke="#1E293B" stroke-width="1"/>
+  <text x="645" y="418" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="700" fill="#38BDF8">Retrofit 2.11.0 + Gson Converter (JobApi.kt)</text>
+  <text x="645" y="436" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; GET https://remotive.com/api/remote-jobs (public 24h feed)</text>
+  <text x="645" y="452" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; JobRepository.classifyRemotiveEligibility() filters out US-only jobs</text>
+  <text x="645" y="468" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" fill="#94A3B8">&bull; Ranks SA_EXPLICIT (Tier 1) ahead of GLOBAL_REMOTE (Tier 2)</text>
 
   <!-- Connectors / Vectors -->
-  <path d="M 550 200 L 630 200" fill="none" stroke="#38BDF8" stroke-width="1.8" marker-end="url(#arrowhead)"/>
-  <path d="M 550 260 L 630 260" fill="none" stroke="#38BDF8" stroke-width="1.8" marker-end="url(#arrowhead)"/>
-  <path d="M 550 435 L 630 435" fill="none" stroke="#38BDF8" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+  <path d="M 550 195 L 630 195" fill="none" stroke="#38BDF8" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+  <path d="M 550 268 L 630 268" fill="none" stroke="#38BDF8" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+  <path d="M 550 442 L 630 442" fill="none" stroke="#38BDF8" stroke-width="1.8" marker-end="url(#arrowhead)"/>
 
-  <!-- Legend labels on vectors -->
-  <text x="556" y="192" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="8.5" font-weight="600" fill="#38BDF8">Firebase Auth</text>
-  <text x="556" y="252" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="8.5" font-weight="600" fill="#38BDF8">Firestore Sync</text>
-  <text x="556" y="427" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="8.5" font-weight="600" fill="#38BDF8">Retrofit REST</text>
+  <text x="556" y="187" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="8.5" font-weight="700" fill="#BAE6FD">Auth Token</text>
+  <text x="556" y="260" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="8.5" font-weight="700" fill="#BAE6FD">Snapshot Sync</text>
+  <text x="556" y="434" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="8.5" font-weight="700" fill="#BAE6FD">HTTPS JSON</text>
 </svg>
