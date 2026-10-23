@@ -58,7 +58,7 @@ class JobDetailsActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtJobTitle)?.text = job.title
         findViewById<TextView>(R.id.txtCompany)?.text = job.company
         findViewById<TextView>(R.id.txtCategory)?.text = job.category
-        findViewById<TextView>(R.id.txtLocation)?.text = "📍 ${job.location}"
+        findViewById<TextView>(R.id.txtLocation)?.text = "📍 " + job.location + " • " + job.southAfricaEligibility
         findViewById<TextView>(R.id.txtType)?.text = "${job.employmentType}${if (job.isRemote) " • Remote" else ""}"
         findViewById<TextView>(R.id.txtPostDate)?.text = "Posted: ${job.postDate}"
         findViewById<TextView>(R.id.txtDescription)?.text = job.description

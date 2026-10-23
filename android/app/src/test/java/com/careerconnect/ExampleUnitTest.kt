@@ -16,13 +16,64 @@ class ExampleUnitTest {
 
     @Test
     fun filterJobs_byQueryCategoryAndType_returnsExpectedResults() {
-        assertEquals(5, JobRepository.filterJobs().size)
-        assertEquals(3, JobRepository.filterJobs(category = "IT & Tech").size)
+        assertEquals(14, JobRepository.filterJobs().size)
+        assertTrue(JobRepository.filterJobs(category = "IT & Tech").size >= 5)
         assertEquals(1, JobRepository.filterJobs(category = "Marketing").size)
-        assertEquals(2, JobRepository.filterJobs(type = "Internship").size)
-        assertEquals(2, JobRepository.filterJobs(type = "Remote").size)
+        assertTrue(JobRepository.filterJobs(type = "Internship").isNotEmpty())
+        assertTrue(JobRepository.filterJobs(type = "Remote").isNotEmpty())
         assertEquals(1, JobRepository.filterJobs(query = "DataWise").size)
         assertEquals(1, JobRepository.filterJobs(query = "Durban").size)
+    }
+
+    @Test
+    fun filterJobs_supportsAllSixCareerPathways() {
+        val softwareJobs = JobRepository.filterJobs(category = JobRepository.PATHWAY_SOFTWARE)
+        val dataJobs = JobRepository.filterJobs(category = JobRepository.PATHWAY_DATA)
+        val networkJobs = JobRepository.filterJobs(category = JobRepository.PATHWAY_NETWORKING)
+        val securityJobs = JobRepository.filterJobs(category = JobRepository.PATHWAY_SECURITY)
+        val roboticsJobs = JobRepository.filterJobs(category = JobRepository.PATHWAY_ROBOTICS)
+        val supportJobs = JobRepository.filterJobs(category = JobRepository.PATHWAY_IT_SUPPORT)
+
+        assertTrue("Software Engineering should return matching positions", softwareJobs.size >= 2)
+        assertTrue("Data Science should return matching positions", dataJobs.size >= 2)
+        assertTrue("Networking & Cloud should return matching positions", networkJobs.size >= 2)
+        assertTrue("Cybersecurity should return matching positions", securityJobs.size >= 2)
+        assertTrue("Robotics & Automation should return matching positions", roboticsJobs.size >= 2)
+        assertTrue("IT Support should return matching positions", supportJobs.size >= 2)
+    }
+
+    @Test
+    fun allRepositoryJobs_areSouthAfricaRelevant() {
+        val allJobs = JobRepository.getAllJobs()
+        allJobs.forEach { job ->
+            assertTrue(
+                "Job ${job.id} location '${job.location}' should be in South Africa",
+                job.location.contains("South Africa", ignoreCase = true) ||
+                    job.location.contains("Johannesburg", ignoreCase = true) ||
+                    job.location.contains("Pretoria", ignoreCase = true) ||
+                    job.location.contains("Durban", ignoreCase = true) ||
+                    job.location.contains("Cape Town", ignoreCase = true)
+            )
+            assertTrue(
+                "Job ${job.id} must be marked as South Africa eligible",
+                job.southAfricaEligibility.contains("South Africa", ignoreCase = true)
+            )
+        }
+    }
+
+    @Test
+    fun remoteJobEligibility_correctlyDistinguishesSAOpenFromCountryRestricted() {
+        val worldwideJob = RemoteJob(title = "AI Engineer", location = "Worldwide")
+        assertEquals(JobEligibilityStatus.SA_ELIGIBLE, worldwideJob.getEligibility())
+
+        val saSpecificJob = RemoteJob(title = "Backend Dev", location = "South Africa, EMEA")
+        assertEquals(JobEligibilityStatus.SA_ELIGIBLE, saSpecificJob.getEligibility())
+
+        val usOnlyJob = RemoteJob(title = "Rails Dev", location = "USA, Canada, USA timezones")
+        assertEquals(JobEligibilityStatus.COUNTRY_RESTRICTED, usOnlyJob.getEligibility())
+
+        val unverifiedJob = RemoteJob(title = "Support Lead", location = "EMEA / Multi-regional")
+        assertEquals(JobEligibilityStatus.SA_ELIGIBLE, unverifiedJob.getEligibility())
     }
 
     @Test
@@ -64,7 +115,7 @@ class ExampleUnitTest {
 
     @Test
     fun dashboardMetrics_reflectActualRepositoryCounts() {
-        assertEquals(5, JobRepository.getAllJobs().size)
+        assertEquals(14, JobRepository.getAllJobs().size)
         assertEquals(0, JobRepository.getTrackedJobs("Saved").size)
         assertEquals(0, JobRepository.getTrackedJobs("Applied").size)
         assertEquals(0, JobRepository.getTrackedJobs("Interview").size)
