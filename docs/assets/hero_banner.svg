@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 440" width="100%" height="auto">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070B14"/>
+      <stop offset="50%" stop-color="#0B132B"/>
+      <stop offset="100%" stop-color="#050811"/>
+    </linearGradient>
+
+    <!-- Electric Accent Glow -->
+    <radialGradient id="electricGlow" cx="20%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#0284C7" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#0B132B" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#070B14" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="electricGlowRight" cx="85%" cy="80%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.18"/>
+      <stop offset="70%" stop-color="#070B14" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Linear Text Accent Gradient -->
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="55%" stop-color="#E2E8F0"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+
+    <!-- Pill Gradient -->
+    <linearGradient id="pillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <!-- Subtle Tech Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="0.75" stroke-opacity="0.6"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Layer -->
+  <rect width="1200" height="440" fill="url(#bgGrad)"/>
+  <rect width="1200" height="440" fill="url(#grid)"/>
+  <rect width="1200" height="440" fill="url(#electricGlow)"/>
+  <rect width="1200" height="440" fill="url(#electricGlowRight)"/>
+
+  <!-- Top Accent Bar -->
+  <rect x="0" y="0" width="1200" height="3" fill="#38BDF8"/>
+
+  <!-- Left Glowing Circuit Accent -->
+  <path d="M 60 70 L 140 70 L 170 100 L 170 180" fill="none" stroke="#0284C7" stroke-width="1.5" stroke-opacity="0.5"/>
+  <circle cx="60" cy="70" r="3.5" fill="#38BDF8"/>
+  <circle cx="170" cy="180" r="3" fill="#38BDF8" fill-opacity="0.8"/>
+
+  <!-- Editorial Category Kicker -->
+  <text x="80" y="112" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="3.5" fill="#38BDF8">
+    UNIVERSITY SOFTWARE ENGINEERING CAPSTONE &bull; 2026
+  </text>
+
+  <!-- Main Hero Brand Title -->
+  <text x="80" y="180" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="58" font-weight="900" letter-spacing="-1.5" fill="url(#titleGrad)">
+    CAREER CONNECT
+  </text>
+
+  <!-- Electric Subhead / Value Proposition -->
+  <text x="80" y="222" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="400" fill="#94A3B8">
+    A targeted mobile platform connecting South African computing graduates with localized opportunities.
+  </text>
+
+  <!-- Technical Value Summary Line -->
+  <text x="80" y="252" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14.5" font-weight="400" fill="#64748B">
+    Native Android (Kotlin) &bull; Cloud Firestore africa-south1 &bull; Remotive REST API &bull; AES-256-GCM Hardware Security
+  </text>
+
+  <!-- Divider Line -->
+  <line x1="80" y1="285" x2="1120" y2="285" stroke="#1E293B" stroke-width="1.5"/>
+
+  <!-- Feature Pills Container -->
+  <!-- Pill 1: Platform -->
+  <g transform="translate(80, 315)">
+    <rect width="230" height="48" rx="8" fill="url(#pillGrad)" stroke="#334155" stroke-width="1"/>
+    <circle cx="24" cy="24" r="5" fill="#38BDF8"/>
+    <text x="38" y="22" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#64748B">CLIENT ARCHITECTURE</text>
+    <text x="38" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#F1F5F9">Android Native &bull; Kotlin 1.9</text>
+  </g>
+
+  <!-- Pill 2: Backend -->
+  <g transform="translate(330, 315)">
+    <rect width="245" height="48" rx="8" fill="url(#pillGrad)" stroke="#334155" stroke-width="1"/>
+    <circle cx="24" cy="24" r="5" fill="#0284C7"/>
+    <text x="38" y="22" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#64748B">CLOUD BACKEND</text>
+    <text x="38" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#F1F5F9">Firestore africa-south1 (JHB)</text>
+  </g>
+
+  <!-- Pill 3: Career Pathways -->
+  <g transform="translate(595, 315)">
+    <rect width="250" height="48" rx="8" fill="url(#pillGrad)" stroke="#334155" stroke-width="1"/>
+    <circle cx="24" cy="24" r="5" fill="#38BDF8"/>
+    <text x="38" y="22" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#64748B">MARKET CURATION</text>
+    <text x="38" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#F1F5F9">6 SA Academic Tech Pathways</text>
+  </g>
+
+  <!-- Pill 4: Security -->
+  <g transform="translate(865, 315)">
+    <rect width="255" height="48" rx="8" fill="url(#pillGrad)" stroke="#334155" stroke-width="1"/>
+    <circle cx="24" cy="24" r="5" fill="#10B981"/>
+    <text x="38" y="22" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#64748B">PRIVACY &amp; SECURITY</text>
+    <text x="38" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#F1F5F9">AES-256-GCM Keystore Storage</text>
+  </g>
+
+  <!-- Bottom Brand Status Indicator -->
+  <g transform="translate(80, 395)">
+    <circle cx="6" cy="6" r="4" fill="#10B981"/>
+    <text x="20" y="10" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="500" fill="#94A3B8">
+      Status: Verified Working Prototype &bull; All 25 Unit Tests Passing &bull; MinSdk 24 &bull; TargetSdk 34
+    </text>
+  </g>
+</svg>

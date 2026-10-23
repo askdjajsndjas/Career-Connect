@@ -2,6 +2,7 @@ package com.careerconnect
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -28,6 +29,7 @@ class JobsActivity : AppCompatActivity() {
     private var activeCategoryTag: String? = null
     private var currentSearchQuery: String? = null
     private var isFetching = false
+    private var includeRestricted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,6 +134,7 @@ class JobsActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnResetJobsFilter)?.setOnClickListener {
             activeCategoryTag = null
             currentSearchQuery = null
+            includeRestricted = false
             findViewById<EditText>(R.id.edtSearchJobs)?.text?.clear()
             setupCategoryChips()
             loadJobs()
@@ -158,6 +161,7 @@ class JobsActivity : AppCompatActivity() {
         JobApi.fetchJobs(
             category = activeCategoryTag,
             search = currentSearchQuery,
+            includeCountryRestricted = includeRestricted,
             limit = 40
         ) { result ->
             runOnUiThread {
@@ -168,11 +172,12 @@ class JobsActivity : AppCompatActivity() {
                     if (jobs.isEmpty()) {
                         layoutEmpty?.visibility = View.VISIBLE
                         scrollView?.visibility = View.GONE
-                        txtCountHeader?.text = "0 remote openings found"
+                        txtCountHeader?.text = "0 South Africa-eligible remote openings found"
                     } else {
                         layoutEmpty?.visibility = View.GONE
                         scrollView?.visibility = View.VISIBLE
-                        txtCountHeader?.text = "Showing ${jobs.size} remote openings via Remotive"
+                        val countLabel = if (jobs.size == 1) "1 position" else "${jobs.size} positions"
+                        txtCountHeader?.text = "Showing $countLabel open to South African applicants"
 
                         for (job in jobs) {
                             val card = createJobCard(job)
@@ -239,7 +244,7 @@ class JobsActivity : AppCompatActivity() {
         }
         cardContent.addView(txtCompany)
 
-        // Tags Row (Location + Category / Job Type)
+        // Eligibility & Location Pills
         val tagsRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -251,15 +256,19 @@ class JobsActivity : AppCompatActivity() {
             }
         }
 
+        val eligibility = job.getEligibility()
+        val (eligText, eligTextColor, eligBgColor) = when (eligibility) {
+            JobEligibilityStatus.SA_ELIGIBLE -> Triple("🇿🇦 Open to South Africa", "#137333", "#E6F4EA")
+            JobEligibilityStatus.INTERNATIONAL_UNVERIFIED -> Triple("🌐 International • Unverified", "#B06000", "#FEF7E0")
+            JobEligibilityStatus.COUNTRY_RESTRICTED -> Triple("🚫 Not SA Eligible", "#C5221F", "#FCE8E6")
+        }
+        tagsRow.addView(createTagPill(eligText, eligTextColor, eligBgColor))
+
         val loc = job.location?.ifBlank { null } ?: "Worldwide Remote"
-        tagsRow.addView(createTagPill("📍 $loc", R.color.text_muted, "#F1F5F9"))
+        tagsRow.addView(createTagPill("📍 $loc", "#475569", "#F1F5F9"))
 
         job.category?.let { cat ->
-            tagsRow.addView(createTagPill(cat, R.color.accent_teal, "#E6FFFA"))
-        }
-
-        job.jobType?.let { jt ->
-            tagsRow.addView(createTagPill(jt.replace("_", " "), R.color.primary_blue, "#EFF6FF"))
+            tagsRow.addView(createTagPill(cat, "#0D9488", "#E6FFFA"))
         }
 
         cardContent.addView(tagsRow)
@@ -285,7 +294,6 @@ class JobsActivity : AppCompatActivity() {
         actionRow.addView(txtApplyPrompt)
 
         cardContent.addView(actionRow)
-
         card.addView(cardContent)
 
         card.setOnClickListener {
@@ -300,13 +308,13 @@ class JobsActivity : AppCompatActivity() {
         return card
     }
 
-    private fun createTagPill(label: String, textColorRes: Int, bgHex: String): TextView {
+    private fun createTagPill(label: String, textColorHex: String, bgHex: String): TextView {
         return TextView(this).apply {
             text = label
             textSize = 11f
-            setTextColor(ContextCompat.getColor(this@JobsActivity, textColorRes))
+            setTextColor(Color.parseColor(textColorHex))
             setPadding(dpToPx(8), dpToPx(3), dpToPx(8), dpToPx(3))
-            setBackgroundColor(android.graphics.Color.parseColor(bgHex))
+            setBackgroundColor(Color.parseColor(bgHex))
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT

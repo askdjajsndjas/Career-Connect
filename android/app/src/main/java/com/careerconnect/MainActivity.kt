@@ -2,6 +2,7 @@ package com.careerconnect
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -28,6 +29,20 @@ class MainActivity : AppCompatActivity() {
     private var activeTypeFilter = "All"
     private var activeCategoryFilter = "All"
     private var currentSearchQuery = ""
+
+    private val pathwayChipsMapping by lazy {
+        listOf(
+            R.id.chipPathwayAll to "All",
+            R.id.chipPathwaySoftware to JobRepository.PATHWAY_SOFTWARE,
+            R.id.chipPathwayData to JobRepository.PATHWAY_DATA,
+            R.id.chipPathwayCloud to JobRepository.PATHWAY_NETWORKING,
+            R.id.chipPathwaySecurity to JobRepository.PATHWAY_SECURITY,
+            R.id.chipPathwayRobotics to JobRepository.PATHWAY_ROBOTICS,
+            R.id.chipPathwaySupport to JobRepository.PATHWAY_IT_SUPPORT,
+            R.id.chipPathwayBusiness to JobRepository.PATHWAY_BUSINESS,
+            R.id.chipPathwayMarketing to JobRepository.PATHWAY_MARKETING
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,9 +114,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.btnSeeAllCategories)?.setOnClickListener {
-            activeCategoryFilter = "All"
-            updateCategoryUI()
-            applyFilters()
+            showCategoryFilterDialog()
         }
     }
 
@@ -120,6 +133,7 @@ class MainActivity : AppCompatActivity() {
             showCategoryFilterDialog()
         }
 
+        // 1. Employment Type Chips
         val typeChipMap = mapOf(
             R.id.chipTypeAll to "All",
             R.id.chipTypeInternship to "Internship",
@@ -136,29 +150,42 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 2. Career Pathway & Major Chips
+        pathwayChipsMapping.forEach { (viewId, pathwayValue) ->
+            findViewById<TextView>(viewId)?.setOnClickListener {
+                activeCategoryFilter = if (activeCategoryFilter == pathwayValue && pathwayValue != "All") "All" else pathwayValue
+                updatePathwayChipsUI()
+                updateCategoryUI()
+                applyFilters()
+            }
+        }
+
+        // 3. Top Categories Icon Row (mapped cleanly to our pathways)
         val categoryViewMap = mapOf(
-            R.id.catItTech to "IT & Tech",
-            R.id.catBusiness to "Business",
-            R.id.catEngineering to "Engineering",
-            R.id.catMarketing to "Marketing"
+            R.id.catItTech to JobRepository.PATHWAY_SOFTWARE,
+            R.id.catEngineering to JobRepository.PATHWAY_ROBOTICS,
+            R.id.catBusiness to JobRepository.PATHWAY_DATA,
+            R.id.catMarketing to JobRepository.PATHWAY_MARKETING
         )
 
-        categoryViewMap.forEach { (viewId, categoryName) ->
+        categoryViewMap.forEach { (viewId, pathwayName) ->
             findViewById<View>(viewId)?.setOnClickListener {
-                activeCategoryFilter = if (activeCategoryFilter == categoryName) "All" else categoryName
+                activeCategoryFilter = if (activeCategoryFilter == pathwayName) "All" else pathwayName
+                updatePathwayChipsUI()
                 updateCategoryUI()
                 applyFilters()
             }
         }
 
         findViewById<View>(R.id.catMore)?.setOnClickListener {
-            resetAllFilters()
+            showCategoryFilterDialog()
         }
     }
 
     private fun resetAllFilters() {
         activeTypeFilter = "All"
         activeCategoryFilter = "All"
+        currentSearchQuery = ""
         val etSearchInput = findViewById<EditText>(R.id.etSearchInput)
         if (!etSearchInput?.text.isNullOrEmpty()) {
             etSearchInput?.setText("")
@@ -171,16 +198,29 @@ class MainActivity : AppCompatActivity() {
             R.id.chipTypeRemote to "Remote"
         )
         updateTypeChipsUI(typeChipMap)
+        updatePathwayChipsUI()
         updateCategoryUI()
         applyFilters()
     }
 
     private fun showCategoryFilterDialog() {
-        val categories = arrayOf("All Categories", "IT & Tech", "Business", "Engineering", "Marketing")
+        val pathways = arrayOf(
+            "All Majors & Pathways",
+            JobRepository.PATHWAY_SOFTWARE,
+            JobRepository.PATHWAY_DATA,
+            JobRepository.PATHWAY_NETWORKING,
+            JobRepository.PATHWAY_SECURITY,
+            JobRepository.PATHWAY_ROBOTICS,
+            JobRepository.PATHWAY_IT_SUPPORT,
+            JobRepository.PATHWAY_BUSINESS,
+            JobRepository.PATHWAY_MARKETING
+        )
+
         AlertDialog.Builder(this)
-            .setTitle("Filter by Category")
-            .setItems(categories) { _, which ->
-                activeCategoryFilter = if (which == 0) "All" else categories[which]
+            .setTitle("Select Degree / Career Pathway")
+            .setItems(pathways) { _, which ->
+                activeCategoryFilter = if (which == 0) "All" else pathways[which]
+                updatePathwayChipsUI()
                 updateCategoryUI()
                 applyFilters()
             }
@@ -207,17 +247,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun updatePathwayChipsUI() {
+        pathwayChipsMapping.forEach { (viewId, pathwayValue) ->
+            val chip = findViewById<TextView>(viewId) ?: return@forEach
+            val isSelected = if (pathwayValue == "All") {
+                activeCategoryFilter == "All"
+            } else {
+                activeCategoryFilter.equals(pathwayValue, ignoreCase = true)
+            }
+            if (isSelected) {
+                chip.setBackgroundResource(R.drawable.bg_chip_active)
+                chip.setTextColor(ContextCompat.getColor(this, R.color.white))
+                chip.setTypeface(null, Typeface.BOLD)
+            } else {
+                chip.setBackgroundResource(R.drawable.bg_chip_inactive)
+                chip.setTextColor(ContextCompat.getColor(this, R.color.text_muted))
+                chip.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+    }
+
     private fun updateCategoryUI() {
         val categoryLabelMap = mapOf(
-            R.id.txtCatItTech to "IT & Tech",
-            R.id.txtCatBusiness to "Business",
-            R.id.txtCatEngineering to "Engineering",
-            R.id.txtCatMarketing to "Marketing"
+            R.id.txtCatItTech to JobRepository.PATHWAY_SOFTWARE,
+            R.id.txtCatEngineering to JobRepository.PATHWAY_ROBOTICS,
+            R.id.txtCatBusiness to JobRepository.PATHWAY_DATA,
+            R.id.txtCatMarketing to JobRepository.PATHWAY_MARKETING
         )
 
-        categoryLabelMap.forEach { (labelId, categoryName) ->
+        categoryLabelMap.forEach { (labelId, pathwayName) ->
             val label = findViewById<TextView>(labelId) ?: return@forEach
-            val isSelected = activeCategoryFilter.equals(categoryName, ignoreCase = true)
+            val isSelected = activeCategoryFilter.equals(pathwayName, ignoreCase = true)
             if (isSelected) {
                 label.setTextColor(ContextCompat.getColor(this, R.color.primary_blue_light))
                 label.setTypeface(null, Typeface.BOLD)
@@ -226,22 +286,51 @@ class MainActivity : AppCompatActivity() {
                 label.setTypeface(null, Typeface.NORMAL)
             }
         }
-
-        val txtRecommendedTitle = findViewById<TextView>(R.id.txtRecommendedTitle)
-        txtRecommendedTitle?.text = if (activeCategoryFilter == "All") {
-            "Recommended for you"
-        } else {
-            "Recommended • $activeCategoryFilter"
-        }
     }
 
     private fun applyFilters() {
-        val results = JobRepository.filterJobs(
-            query = currentSearchQuery,
-            category = activeCategoryFilter,
-            type = activeTypeFilter
-        )
+        val results = if (activeCategoryFilter == "All" && currentSearchQuery.isEmpty() && activeTypeFilter == "All") {
+            val user = FirebaseAuth.getInstance().currentUser
+            val prefs = getSharedPreferences(ProfileActivity.profilePrefsName(user?.uid), Context.MODE_PRIVATE)
+            val qual = ProfileActivity.readSecurePref(prefs, "qualification", null)
+            val skills = ProfileActivity.readSecurePref(prefs, "skills", null)
+            val interest = ProfileActivity.readSecurePref(prefs, "careerInterest", null)
+            JobRepository.getPersonalizedRecommendations(qual, skills, interest)
+        } else {
+            JobRepository.filterJobs(
+                query = currentSearchQuery,
+                category = activeCategoryFilter,
+                type = activeTypeFilter
+            )
+        }
+
+        val txtRecommendedTitle = findViewById<TextView>(R.id.txtRecommendedTitle)
+        if (activeCategoryFilter == "All") {
+            val user = FirebaseAuth.getInstance().currentUser
+            val prefs = getSharedPreferences(ProfileActivity.profilePrefsName(user?.uid), Context.MODE_PRIVATE)
+            val qual = ProfileActivity.readSecurePref(prefs, "qualification", null)
+            val qualLabel = if (!qual.isNullOrBlank()) " • $qual" else ""
+            txtRecommendedTitle?.text = "Recommended for you$qualLabel (${results.size} SA listings)"
+        } else {
+            val shortName = shortenCategoryName(activeCategoryFilter)
+            txtRecommendedTitle?.text = "Recommended • $shortName (${results.size})"
+        }
+
         renderJobListings(results)
+    }
+
+    private fun shortenCategoryName(fullName: String): String {
+        return when (fullName) {
+            JobRepository.PATHWAY_SOFTWARE -> "Software Dev"
+            JobRepository.PATHWAY_DATA -> "Data Science"
+            JobRepository.PATHWAY_NETWORKING -> "Cloud & Networks"
+            JobRepository.PATHWAY_SECURITY -> "Cybersecurity"
+            JobRepository.PATHWAY_ROBOTICS -> "Robotics & Automation"
+            JobRepository.PATHWAY_IT_SUPPORT -> "IT Support"
+            JobRepository.PATHWAY_BUSINESS -> "Business"
+            JobRepository.PATHWAY_MARKETING -> "Marketing"
+            else -> fullName
+        }
     }
 
     private fun renderJobListings(jobs: List<JobListing>) {
@@ -279,7 +368,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        txtNoJobsFound?.visibility = if (jobs.isEmpty()) View.VISIBLE else View.GONE
+        if (jobs.isEmpty()) {
+            txtNoJobsFound?.visibility = View.VISIBLE
+            val filterDesc = if (activeCategoryFilter != "All") " in '${shortenCategoryName(activeCategoryFilter)}'" else ""
+            val queryDesc = if (currentSearchQuery.isNotEmpty()) " matching '$currentSearchQuery'" else ""
+            txtNoJobsFound?.text = "No South African opportunities found$filterDesc$queryDesc.\nTap 'All Majors' or reset filters to browse all available opportunities."
+        } else {
+            txtNoJobsFound?.visibility = View.GONE
+        }
     }
 
     private fun bindStaticJobCard(
@@ -306,7 +402,7 @@ class MainActivity : AppCompatActivity() {
 
         if (tagsLayout != null && tagsLayout.childCount >= 2) {
             (tagsLayout.getChildAt(0) as? TextView)?.text = job.employmentType
-            val locationLabel = if (job.isRemote) "Remote" else job.location.substringBefore(",")
+            val locationLabel = if (job.isRemote) "Remote • SA" else job.location.substringBefore(",")
             (tagsLayout.getChildAt(1) as? TextView)?.text = locationLabel
         }
 
@@ -386,16 +482,19 @@ class MainActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                topMargin = dpToPx(12)
+                topMargin = dpToPx(10)
             }
             orientation = LinearLayout.HORIZONTAL
         }
 
         val typePill = createTagPill(job.employmentType, hasEndMargin = true)
-        val locationLabel = if (job.isRemote) "Remote" else job.location.substringBefore(",")
-        val locationPill = createTagPill(locationLabel, hasEndMargin = false)
+        val locationLabel = if (job.isRemote) "Remote • SA" else "📍 " + job.location.substringBefore(",")
+        val locationPill = createTagPill(locationLabel, hasEndMargin = true)
+        val categoryPill = createTagPill(job.category, hasEndMargin = false)
+
         tagsRow.addView(typePill)
         tagsRow.addView(locationPill)
+        tagsRow.addView(categoryPill)
 
         middleColumn.addView(titleView)
         middleColumn.addView(companyView)
@@ -466,7 +565,7 @@ class MainActivity : AppCompatActivity() {
             text = label
             setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text_muted))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
-            setPadding(dpToPx(10), dpToPx(4), dpToPx(10), dpToPx(4))
+            setPadding(dpToPx(8), dpToPx(3), dpToPx(8), dpToPx(3))
         }
     }
 
