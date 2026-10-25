@@ -6,6 +6,7 @@
 
 <p align="center">
   <a href="#02--narrated-system-demonstration"><kbd>▶ &nbsp;WATCH 02:57 DEMO (en-ZA)</kbd></a>&nbsp;&nbsp;
+  <a href="https://youtube.com/shorts/hio5pNRSheY?feature=share"><kbd>▶ &nbsp;WATCH ON YOUTUBE</kbd></a>&nbsp;&nbsp;
   <a href="#03--visual-feature-showcase"><kbd>03 &nbsp;FEATURE SHOWCASE</kbd></a>&nbsp;&nbsp;
   <a href="#04--architecture-security--state-engine"><kbd>04 &nbsp;SYSTEM ARCHITECTURE</kbd></a>&nbsp;&nbsp;
   <a href="#05--verification-setup--ci-pipeline"><kbd>05 &nbsp;SETUP &amp; 26 UNIT TESTS</kbd></a>&nbsp;&nbsp;
@@ -17,7 +18,8 @@
   <b>Repository:</b> <a href="https://github.com/askdjajsndjas/Career-Connect"><code>github.com/askdjajsndjas/Career-Connect</code></a> &nbsp;&bull;&nbsp;
   <b>Android Source:</b> <a href="android/app/src/main/java/com/careerconnect"><code>android/app/src/main/java/com/careerconnect</code></a> &nbsp;&bull;&nbsp;
   <b>Firestore Rules:</b> <a href="firestore.rules"><code>firestore.rules</code></a> &nbsp;&bull;&nbsp;
-  <b>Demo Master:</b> <a href="demo_career_connect_female_narrated.mp4"><code>demo_career_connect_female_narrated.mp4</code></a>
+  <b>Demo Master:</b> <a href="demo_career_connect_female_narrated.mp4"><code>demo_career_connect_female_narrated.mp4</code></a> &nbsp;&bull;&nbsp;
+  <b>YouTube Demo (Unlisted):</b> <a href="https://youtube.com/shorts/hio5pNRSheY?feature=share"><code>youtube.com/shorts/hio5pNRSheY</code></a>
 </sub>
 
 </div>
@@ -66,12 +68,13 @@
 <table>
   <tr>
     <td width="62%" valign="middle" align="center">
-      <a href="demo_career_connect_female_narrated.mp4" title="Click to open or download demo_career_connect_female_narrated.mp4 (7.49 MB)">
+      <a href="https://youtube.com/shorts/hio5pNRSheY?feature=share" title="Click to watch the narrated demo on YouTube (unlisted, 02:57)">
         <img src="docs/assets/video_preview_card.svg" alt="Watch Career Connect Official Narrated Demo Video (02:57, en-ZA)" width="100%" />
       </a>
       <br />
       <sub>
-        <b>Click the cinema card above</b> to open the repository video page, or use the direct links below:<br />
+        <b>Click the cinema card above</b> to watch the demo on YouTube, or use the direct links below:<br />
+        <a href="https://youtube.com/shorts/hio5pNRSheY?feature=share"><b>[Watch on YouTube (Unlisted)]</b></a> &nbsp;&bull;&nbsp;
         <a href="demo_career_connect_female_narrated.mp4"><b>[Open Repository Video Page]</b></a> &nbsp;&bull;&nbsp;
         <a href="https://github.com/askdjajsndjas/Career-Connect/raw/main/demo_career_connect_female_narrated.mp4"><b>[Direct Raw MP4 Download (7.49 MB)]</b></a> &nbsp;&bull;&nbsp;
         <a href="Career_Connect_Verified_Screenshots.pdf"><b>[Open Verified Screenshots PDF]</b></a>
@@ -91,6 +94,8 @@
 </table>
 
 > [!IMPORTANT]
+> **Watch in your browser (no download):** the full narrated demo is available as an unlisted YouTube video: [https://youtube.com/shorts/hio5pNRSheY?feature=share](https://youtube.com/shorts/hio5pNRSheY?feature=share). The original MP4 remains in the repository for offline download.
+>
 > **How Video Playback Works on GitHub:** GitHub sanitizes raw `<video>` HTML tags referencing repository-relative paths in `README.md`, and commits `demo_career_connect_female_narrated.mp4` (`7,852,454 bytes`, `1920x1080` H.264 video + `48 kHz` AAC stereo audio) directly in the repository root. Clicking the preview card or `[Direct Raw MP4 Download]` downloads/streams the full `02:57` narrated walkthrough directly from GitHub. *(Note for repository owner: ensure repository visibility in GitHub **Settings &rarr; Danger Zone** is set to **Public** so external graders can access the repository and raw MP4 stream without a 404 permissions wall.)*
 
 <details>
